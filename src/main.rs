@@ -6,10 +6,12 @@ mod func;
 mod sliceT;
 mod structT;
 mod optionT;
+mod vectorT;
+mod hashmapT;
+mod intoT;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-//    structT::mainT();
-    optionT::mainT();
+
 }
