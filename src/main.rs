@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 ///通过mod引入的模块, 可以再通过use省略路径
 use func::test1::two_sum;
 
@@ -9,9 +11,12 @@ mod optionT;
 mod vectorT;
 mod hashmapT;
 mod intoT;
+mod traitT;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-
+    traitT::mainT();
 }
+
+
