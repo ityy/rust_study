@@ -1,6 +1,7 @@
 #![allow(non_snake_case)] //允许驼峰格式
 #![allow(unused)] //允许未使用变量
 
+use std::collections::HashMap;
 use std::fmt::Display;
 
 ///通过mod引入的模块, 可以再通过use省略路径
@@ -11,17 +12,19 @@ mod func;
 mod sliceT;
 mod structT;
 mod optionT;
-mod vectorT;
+mod collections;
 mod hashmapT;
 mod intoT;
 mod traitT;
 mod httpT;
 mod stringT;
+mod patternT;
+mod into_from;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    func::main();
+    into_from::intoT::main();
 }
 
 

@@ -1,5 +1,5 @@
 /// vec 学习
-pub fn mainT() {
+pub fn main() {
     //新建
     let v1: Vec<i32> = Vec::new(); //new 方式
     let mut v2 = vec![1, 2, 3]; //宏 方式
