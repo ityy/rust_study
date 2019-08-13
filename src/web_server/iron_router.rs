@@ -12,22 +12,29 @@ use serde_json::{Result, Value};
 //为结构体自动实现两个特性, 由serde库提供自动实现的逻辑
 #[derive(Serialize, Deserialize)]
 struct Greeting {
-    msg: String
+    message: String,
 }
 
 pub fn main() {
+    let port = "localhost:3000";
+
     //创建路由
     let mut router = Router::new();
     //设置路由
     router.get("/", hello_world, "hello_world");
     router.post("/set", set_greeting, "set_greeting");
 
+    println!("binding port: {}", port);
+    println!("server is running...");
+
     //使用设置的路由, 启动server
-    Iron::new(router).http("localhost:3000").unwrap();
+    Iron::new(router).http(port).unwrap();
 }
 
 fn hello_world(_: &mut Request) -> IronResult<Response> {
-    let greeting = Greeting { msg: "Hello, World".to_string() };
+    let greeting = Greeting {
+        message: "request is ok!".to_string(),
+    };
     let payload = serde_json::to_string(&greeting).unwrap();
     Ok(Response::with((status::Ok, payload)))
 }
@@ -39,7 +46,9 @@ fn set_greeting(request: &mut Request) -> IronResult<Response> {
     request.body.read_to_string(&mut payload);
     //反序列化到对象
     let request: Greeting = serde_json::from_str(payload.as_str()).unwrap();
-    let greeting = Greeting { msg: request.msg };
+    let greeting = Greeting {
+        message: "your params is: ".to_string() + request.message.as_str(),
+    };
     //序列化为json文本
     let payload = serde_json::to_string(&greeting).unwrap();
     //返回
