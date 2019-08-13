@@ -5,4 +5,13 @@ authors = ["yangyang <ofyang@qq.com>"]
 edition = "2018"
 
 [dependencies]
+#for http request
 reqwest = "0.9.19"
+
+#for web server
+iron = "*"
+router = "0.6.0"
+
+#json lib
+serde_json = "1.0.40"
+serde = "*"
