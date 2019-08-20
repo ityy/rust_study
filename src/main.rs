@@ -25,13 +25,14 @@ mod patternT;
 mod into_from;
 mod web_server;
 mod http_req;
-mod lazy_static_test;
+//mod lazy_static_test;
 mod cow_test;
+mod pointer_test;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    hashmapT::main();
+    pointer_test::mutex_test::test();
 }
 
 
