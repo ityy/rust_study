@@ -2,7 +2,15 @@
 use core::borrow::Borrow;
 use std::collections::HashMap;
 
-pub fn mainT() {
+struct LibInfo {
+    libmap: HashMap<String, String>,
+}
+
+//静态变量只能用于如下类型
+//calls in statics are limited to constant functions, tuple structs and tuple variants
+//static mut LIB_INFO: LibInfo = LibInfo { libmap: HashMap::new() };
+
+pub fn main() {
     //新建
     let mut map: HashMap<String, i32> = HashMap::new();
 
@@ -33,4 +41,20 @@ pub fn mainT() {
     for (k, v) in &map {
         println!("{}:{}", k, v); //这会以任意顺序打印出每一个键值对
     }
+
+//    test_static();
+//    test_static2();
 }
+
+//fn test_static() {
+//    unsafe {
+//        LIB_INFO.libmap.insert("1".to_string(), "a".to_string());
+//    }
+//}
+
+//fn test_static2() {
+//    unsafe {
+//        let s = LIB_INFO.libmap.get("1").unwrap();
+//        println!("static map:{}", s);
+//    }
+//}

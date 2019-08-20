@@ -1,6 +1,9 @@
 #![allow(non_snake_case)] //允许驼峰格式
 #![allow(unused)] //允许未使用变量
 
+#[macro_use]
+extern crate lazy_static;
+
 use std::collections::HashMap;
 use std::fmt::Display;
 
@@ -21,11 +24,14 @@ mod stringT;
 mod patternT;
 mod into_from;
 mod web_server;
+mod http_req;
+mod lazy_static_test;
+mod cow_test;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    web_server::iron_router::main();
+    hashmapT::main();
 }
 
 
