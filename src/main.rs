@@ -25,7 +25,7 @@ mod patternT;
 mod into_from;
 mod web_server;
 mod http_req;
-//mod lazy_static_test;
+mod lazy_static_test;
 mod cow_test;
 mod pointer_test;
 
