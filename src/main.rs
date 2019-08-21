@@ -32,7 +32,7 @@ mod pointer_test;
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    pointer_test::mutex_test::test();
+    pointer_test::raw_pointer::test();
 }
 
 
