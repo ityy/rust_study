@@ -28,11 +28,13 @@ mod http_req;
 mod lazy_static_test;
 mod cow_test;
 mod pointer_test;
+mod range_test;
+mod futures_test;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    pointer_test::symbol_and::main();
+    futures_test::future_031_single::main();
 }
 
 

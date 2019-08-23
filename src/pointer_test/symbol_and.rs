@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 pub fn main() {
-    stack_test()
+    symbol_test()
 }
 
 
@@ -53,3 +53,21 @@ fn heap_test() {
     //与stack测试没有区别
     //变量符号代表一个内存地址
 }
+
+//符号与指针测试
+fn symbol_test() {
+    //申请一个内存地址nil, 存放空
+    let nil = ();
+
+    println!("nil_addr：{:p}", &nil);// 获取nil的地址
+    println!("nil_addr：{:p}", &nil);// 获取nil的地址 因为nil固定, 所以两次结果一样
+
+    println!("&nil_addr：{:p}", &&nil); //&号还有生成新地址的能力, 这两次结果不一样, 不一样的指针链路, 终点是一致的.
+    println!("&nil_addr：{:p}", &&nil);
+
+    let x = &nil as *const () as usize;
+    println!("&nil_addr：0x{:X}", x);
+}
+
+
+
