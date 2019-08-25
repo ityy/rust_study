@@ -44,7 +44,7 @@ impl Future for WaitForIt {
             //等待时间未到
             self.polls += 1;
 //            println!("轮询结果:未完成 --> {:?}", self); //在不加这条打印语句时,polls了101k次, 即每秒10万次轮询. 加上打印是20k次.
-            futures::task::current().notify();//不加这一句, 则reactor只寻论此future一次.
+            futures::task::current().notify();//不加这一句, 则reactor只轮询此future一次.
             Ok(Async::NotReady)
         }
     }
