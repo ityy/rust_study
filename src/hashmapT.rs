@@ -1,6 +1,7 @@
 ///map 学习.
 use core::borrow::Borrow;
 use std::collections::HashMap;
+use std::sync::Arc;
 
 struct LibInfo {
     libmap: HashMap<String, String>,
@@ -44,6 +45,24 @@ pub fn main() {
 
 //    test_static();
 //    test_static2();
+
+
+    let mut map_struct = Mapwarp {
+        map: HashMap::new(),
+        count: 0,
+    };
+//    let mut map_struct_mut_map = map_struct.map;
+    map_struct.map.insert(String::from("X"), 255);
+    map_struct_mut_map_test(&map_struct);
+    // 遍历
+//    for (k, v) in map_struct_mut_map {
+//        println!("{}:{}", k, v); //这会以任意顺序打印出每一个键值对
+//    }
+}
+
+fn map_struct_mut_map_test(map: &Mapwarp) {
+    let map_struct_mut_map = map.map.get(String::from("X").as_str());
+    println!("{}", map_struct_mut_map.unwrap());
 }
 
 //fn test_static() {
@@ -58,3 +77,11 @@ pub fn main() {
 //        println!("static map:{}", s);
 //    }
 //}
+
+
+//有Mapwarp的所有权才可以获取HashMap的可变借用
+//有HashMap的可变借用才可以插入数据
+struct Mapwarp {
+    map: HashMap<String, i32>,
+    count: i32,
+}

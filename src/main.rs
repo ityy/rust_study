@@ -34,7 +34,7 @@ mod futures_test;
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    futures_test::future_031_single::main();
+    hashmapT::main();
 }
 
 
