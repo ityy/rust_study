@@ -37,7 +37,7 @@ mod data_structure;
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    thread_study::t01_ceate::build();
+    data_structure::queue_study::main();
 }
 
 
