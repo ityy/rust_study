@@ -30,11 +30,14 @@ mod cow_test;
 mod pointer_test;
 mod range_test;
 mod futures_test;
+mod thread_study;
+mod async_study;
+mod data_structure;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    hashmapT::main();
+    thread_study::t01_ceate::build();
 }
 
 
