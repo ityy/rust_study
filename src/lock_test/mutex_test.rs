@@ -1,5 +1,6 @@
 use std::sync::Mutex;
 
+#[test]
 pub fn test() {
     let m = Mutex::new(5);
     {

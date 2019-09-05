@@ -7,6 +7,8 @@
 use std::collections::HashMap;
 use std::sync::Mutex;
 
+pub mod lazy_static_hashmap;
+
 //lazy_static! {
 //    static ref ARRAY: Mutex<Vec<u8>> = Mutex::new(vec![]);
 //}

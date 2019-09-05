@@ -27,18 +27,18 @@ mod web_server;
 mod http_req;
 mod lazy_static_test;
 mod cow_test;
-mod pointer_test;
+mod memory_and_pointer;
 mod range_test;
 mod futures_test;
 mod thread_study;
 mod async_study;
 mod data_structure;
-mod memory_manage;
+mod lock_test;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    memory_manage::free_memory_test::overflow_test();
+    hashmapT::main();
 }
 
 
