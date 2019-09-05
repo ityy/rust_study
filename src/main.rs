@@ -33,11 +33,12 @@ mod futures_test;
 mod thread_study;
 mod async_study;
 mod data_structure;
+mod memory_manage;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    data_structure::queue_study::main();
+    memory_manage::free_memory_test::overflow_test();
 }
 
 

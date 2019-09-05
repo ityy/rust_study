@@ -108,11 +108,11 @@ fn place_expression_heap() {
     println!("string_as_ptr 变量地址: {:p}", &string_as_ptr);
     println!("string_as_ptr 变量值: {:p}", string_as_ptr);//0x29ACC686810
     unsafe {
-        let ptr_value = *string_as_ptr;//此u8为0x74 即字母t的acsii码  u8是copy型的,x为新变量,所以这里不是移动 是拷贝
+        let ptr_value = *string_as_ptr;//此u8为0x74 即字母t的ascii码  u8是copy型的,x为新变量,所以这里不是移动 是拷贝
         println!("string_as_ptr 解一层地址后的值: {}", *string_as_ptr as char);//0x74
         println!("string_as_ptr 解一层地址再取地址: {:p}", &*string_as_ptr);
         println!("ptr_value 变量地址: {:p}", &ptr_value);
-        println!("ptr_value 变量值: 0x{:X} 这是t的acsii编码,已取到最终地址", ptr_value);
+        println!("ptr_value 变量值: 0x{:X} 这是t的ascii编码,已取到最终地址", ptr_value);
         *string_as_ptr = *string_as_ptr + 1;
         println!("string 通过指针修改后: {}", string);
     }

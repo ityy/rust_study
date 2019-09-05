@@ -114,7 +114,7 @@ fn test_null_pointer() {
 
 //使用引用计数解决悬垂指针的问题
 #[test]
-fn test_solve_null_pointer() {
+fn solve_null_pointer() {
     struct MapwarpRc {
         map: Rc<HashMap<String, i32>>,
         count: i32,
