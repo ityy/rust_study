@@ -5,13 +5,18 @@ use std::thread;
 /// 因为异步代码能让我们在同一个系统线程上并发执行多项任务。
 /// 在一个典型的多线程应用里，如果你想同时下载两个不同的网页，你必须将这两项工作分配到两个不同的线程上，
 /// 像这样：
-fn get_two_sites1() {
-    // 创建两个线程分别执行各自的下载任务
-    let thread_one = thread::spawn(|| download("https:://www.foo.com"));
-    let thread_two = thread::spawn(|| download("https:://www.bar.com"));
-    // 等待两个线程完成任务
-    thread_one.join();
-    thread_two.join();
+/// ```no_run
+/// fn get_two_sites1() {
+///     // 创建两个线程分别执行各自的下载任务
+///     let thread_one = thread::spawn(|| download("https:://www.foo.com"));
+///     let thread_two = thread::spawn(|| download("https:://www.bar.com"));
+///     // 等待两个线程完成任务
+///     thread_one.join();
+///     thread_two.join();
+/// }
+/// ```
+fn nothing1(){
+
 }
 
 ///对很多应用来说这就足够了——这样一来，多线程就被设计为只用来一次性执行多个不同任务。
@@ -38,3 +43,6 @@ fn get_two_sites1() {
 /// 在 Rust 中，async fn 会创建一个异步函数，当它被调用时，会返回一个需要依次执行函数体来完成的 future 对象。
 /// 传统多线程应用也可以非常有效，Rust的较小的内存占用以及可预测性意味着你可以做更多的事，即使不使用 async 关键字。
 /// 然而，异步编程模型增长的复杂性并不总是值得的，想清楚你的应用采用简单多线程模型是否会更好仍然是很重要的。
+fn nothing2(){
+
+}
