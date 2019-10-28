@@ -13,7 +13,6 @@ use func::test1::two_sum;
 ///以文件夹为mod的, 文件夹内必须有一个mod.rs存放模块源码
 mod func;
 mod sliceT;
-mod structT;
 mod optionT;
 mod collections;
 mod hashmapT;
@@ -34,6 +33,8 @@ mod thread_study;
 mod async_study;
 mod data_structure;
 mod lock_test;
+mod iii_type_system;
+mod ii_basic;
 
 
 ///主方法, 运行其它学习单元的主方法

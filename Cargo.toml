@@ -9,7 +9,7 @@ edition = "2018"
 reqwest = "0.9.19"
 
 #for web server
-iron = "0.6.1"
+#iron = "0.6.1"
 router = "0.6.0"
 
 #json lib

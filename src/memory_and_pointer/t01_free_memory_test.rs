@@ -11,15 +11,15 @@ use std::time::Duration;
 /// 结论: 内存确实被作用域结束时drop掉了
 //#[test]
 pub fn drop_test() {
-    let s = String::from("hello");//new一个String
-    let ptr = move_s(s);//获取起地址,并移出它
+    let old_string = String::from("hello");//new一个String
+    let ptr = move_s(old_string);//获取old_string地址,并移出它
     thread::sleep(Duration::from_secs(1));
     loop {
         //无限循环申请内存
         let temp = String::from("顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶");
         println!();
         println!("------after drop-------");
-        //打印s所在位置的内存变化情况 此时已发生变化
+        //打印old_string所在位置的内存变化情况 此时已发生变化
         for i in 0..5 {
             let value = unsafe { *((ptr + i) as *const u8) };
             println!("addr:0x{:X} value:0x{:X}", ptr + i, value);
@@ -27,20 +27,21 @@ pub fn drop_test() {
     }//释放内存
 }
 
+//获取s的地址, 并释放掉s
 fn move_s(s: String) -> usize {
-    let ptr = s.as_ptr() as usize;
-    //打印s所在位置的内存变化情况 此时为hello
+    let ptr = s.as_ptr() as usize;//获取堆中地址, 转为usize型
+    //打印s所在位置的内存变化情况
     for i in 0..5 {
         let value = unsafe { *((ptr + i) as *const u8) };
         println!("addr:0x{:X} value:0x{:X}", ptr + i, value);
     }
     /*
-    hello ascii:
-    addr:0x28AF59A6710 value:0x68
-    addr:0x28AF59A6711 value:0x65
-    addr:0x28AF59A6712 value:0x6C
-    addr:0x28AF59A6713 value:0x6C
-    addr:0x28AF59A6714 value:0x6F
+        此时为hello的ascii码:
+        addr:0x28AF59A6710 value:0x68
+        addr:0x28AF59A6711 value:0x65
+        addr:0x28AF59A6712 value:0x6C
+        addr:0x28AF59A6713 value:0x6C
+        addr:0x28AF59A6714 value:0x6F
     */
     ptr
 }//此处drop了s
@@ -55,8 +56,8 @@ pub fn overflow_test() {
     loop {
         //无限循环申请内存
         let temp = String::from("顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶");
-        &v.push(temp);
+        &v.push(temp);//转移所有权
         i += 1;
         println!("count:{}", i);
-    }//释放内存
+    }//释放temp, 因其失去了内存的所有权, 这里只是销毁变量, 内存没有被释放
 }
