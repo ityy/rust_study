@@ -51,7 +51,7 @@ impl Future for WaitForIt {
 }
 
 
-//
+#[test]
 pub fn main() {
     let mut reactor = Core::new().unwrap();
 

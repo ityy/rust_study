@@ -41,7 +41,9 @@ fn testPoint() {
 }
 
 ///接口继承
-//表示Add2继承了Add，要实现Add2必须先实现Add
-trait Add2: Add {
+///表示Add2继承了Add，要实现Add2必须先实现Add
+/// <T = Self>表示声明泛型T，默认值等于调用此特性的类型自己
+/// 后面的<T>则是使用
+pub trait Add2<T = Self>: Add<T> {
     //空代码
 }
