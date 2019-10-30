@@ -23,7 +23,7 @@ struct Point {
 
 impl Add<Point> for Point {
     //Add<Rhs=Self> 表示不指定泛型时的默认值
-    type Output = Point;//通过别名赋值的方式传递类型， 也可以用泛型替代, 推荐前者
+    type Output = Point;//关联类型 通过别名赋值的方式传递类型， 也可以用泛型替代, 推荐前者
 
     fn add(self, rhs: Point) -> Self::Output {
         Point {
