@@ -26,3 +26,5 @@ tokio-core = "0.1.17"
 #datetime lib
 chrono = "0.4.7"
 time = "0.1"
+
+async-std="*"

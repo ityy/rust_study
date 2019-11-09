@@ -1,4 +1,4 @@
-pub fn mainT() {
+pub fn main_t() {
     //from和into是一对，实现了From trait就会自动反过来实现Into，实现都是调用的str.to_owned，to_string调用的String::from
     //所以背后都是调用的to_owned……
     let s1 = "111";

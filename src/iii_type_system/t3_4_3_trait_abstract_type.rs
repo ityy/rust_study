@@ -24,7 +24,7 @@ fn static_dispatch1<T>(t: &T) where T: Bar {
 //特性对象， 动态派发
 //直接把实现了Bar的类型的集合作为一个类型
 //这部分有点类似java的接口与多态
-fn dynamic_dispatch1(t: &Bar) {
+fn dynamic_dispatch1(t: &dyn Bar) {
     t.nothing();
 }
 //Bar是一个特性,特性对象是抽象的对象,其大小无法确定,所以可以用&Bar或Box<T>来制造一个trait对象
@@ -46,7 +46,7 @@ fn static_dispatch2(t: impl Bar) -> impl Bar {
 ///dyn Trait
 ///2018版新加入的,相对于impl Trait来说,为特性对象新加的语法:动态派发抽象类型
 /// Box<dyn Bar>其实就是特性对象,2015版写作Box<Bar>,新语法为了突出其动态派发的性质
-fn dynamic_dispatch2(t: &Bar) -> Box<dyn Bar> {
+fn dynamic_dispatch2(t: &dyn Bar) -> Box<&dyn Bar> {
     t.nothing();
     Box::new(t)
 }
