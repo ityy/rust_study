@@ -1,3 +1,4 @@
+//! 测试future的chain必须返回同一类型的Error
 use std::{error, fmt};
 
 use futures::Future;
@@ -5,16 +6,17 @@ use futures::future::{err, ok};
 use tokio_core::reactor::Core;
 
 ///自定义两个错误:ErrorA ErrorB
-/// 测试future的chain必须返回同一类型的Error
 #[derive(Debug, Default)]
 pub struct ErrorA {}
 
+///实现显示特性
 impl fmt::Display for ErrorA {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "ErrorA!")
     }
 }
 
+///实现Error特性
 impl error::Error for ErrorA {
     fn description(&self) -> &str {
         "Description for ErrorA"
@@ -29,12 +31,14 @@ impl error::Error for ErrorA {
 #[derive(Debug, Default)]
 pub struct ErrorB {}
 
+///实现显示特性
 impl fmt::Display for ErrorB {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "ErrorB!")
     }
 }
 
+///实现Error特性
 impl error::Error for ErrorB {
     fn description(&self) -> &str {
         "Description for ErrorB"

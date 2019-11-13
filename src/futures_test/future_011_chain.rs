@@ -1,4 +1,5 @@
-//!future意味将来
+//! 'Future'与'普通函数'的区别演示
+//! Future意味将来
 //! 表示写好的代码,方法串联好,待到使用时才运行.
 use std::fmt::Error;
 
@@ -6,14 +7,14 @@ use futures::Future;
 use futures::future::ok;
 use tokio_core::reactor::Core;
 
-use crate::futures_test::error::{ErrorA, ErrorB};
+use crate::futures_test::future_012_chain_error::{ErrorA, ErrorB};
 
 //原始function
 fn my_fn() -> Result<u32, Box<Error>> {
     Ok(100)
 }
 
-//future
+//返回一个Future特性的对象 ok()是Future库的方法,其返回一个实现了Future特性的对象
 fn my_fut() -> impl Future<Item=u32, Error=Box<Error>> {
     ok(100)
 }
@@ -46,14 +47,14 @@ pub fn test2() {
     let retval2 = my_fn_squared(retval).unwrap();
     println!("原始调用 {:?}", retval2);
 
-    //调用future
+    //调用Future
     let mut reactor = Core::new().unwrap();
     let retval = reactor.run(my_fut()).unwrap();
     println!("调用future {:?}", retval);
     let retval2 = reactor.run(my_fut_squared(retval)).unwrap();
     println!("调用future {:?}", retval2);
 
-    //调用future组合
+    //调用Future链
     let chained_future = my_fut().and_then(|retval| my_fut_squared(retval));
     let retval2 = reactor.run(chained_future).unwrap();
     println!("调用future组合 {:?}", retval2);

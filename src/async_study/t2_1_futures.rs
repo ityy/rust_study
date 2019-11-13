@@ -42,19 +42,22 @@ fn read_file(path: &str) -> stdio::Result<String> {
 ///计算尚未完成执行，它将返回Poll::Pending
 #[test]
 fn test() {
-    let s = read_file("D:\\Files\\Code\\rust\\rust_study\\Cargo.toml").unwrap();
+    let s = read_file("D:\\yang_rust\\rust_study\\Cargo.toml").unwrap();
     println!("{}", s);
 }
 
+///异步的目标是降低线程开销
 ///Rust现在有一个特殊的语法:async。上面的例子，用async-std实现，看起来像下方这样。
 ///差别小得惊人，对吧?我们所做的就是标记函数async并插入两个特殊的命令:.await。
 ///这个async函数设置了一个延迟计算。
 /// 当这个函数被调用时，它将产生一个Future<Output = io::Result<String>>，而不是立即返回一个io::Result<String>。
 /// (或者，更准确地说，为您生成一个实现Future<Output = io::Result<String>>的类型。)
+///
+/// 把此方法丢进一个单线程loop内调用
 async fn read_file_async(path: &str) -> io::Result<String> {
-    let mut file = File::open(path).await?;//在这里，代码将等待Future产生它的值。
+    let mut file = File::open(path).await?;//在这里，代码将等待Future产生它的值。 这里被称为parked, 事件完成后会unpark
     //当您在后台执行的操作完成时，它将返回到这一点。
-    // 这就是为什么这种类型的编程也被称为事件编程。
+    // 这就是为什么这种编程风格也称为事件编程的原因。我们正在等待事情 发生
     // 我们等待事情发生(比如打开一个文件)，然后做出反应(开始阅读)。
     // 当同时执行2个或更多这样的函数时，我们的运行时系统就能够用处理当前发生的所有其他事件来填充等待时间。
     // 而不必阻塞代码完成一个之后再去完成下一个了。
