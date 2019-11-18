@@ -95,4 +95,12 @@ fn consume_stream() {
         //我们返回的是个Future, 所以我们不仅可以使用Reactor执行future, 也可以跟别的Future, 组合成Future Chain.
         ok(())
     });
+
+    let ret = reactor.run(future);
 }
+//结果:
+//num === 1
+//num === 2
+//num === 3
+//num === 4
+//num === 5
