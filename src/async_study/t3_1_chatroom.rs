@@ -31,5 +31,7 @@ fn nothing1() {}
 /// Add the following lines to Cargo.toml:
 /// [dependencies]
 /// futures = "0.3.1"
-/// async-std = "1"
+/// async-std = "1.0.1"
+///
+/// 由于依赖冲突，此项目已独立到https://github.com/ityy/rust_async_chat
 fn nothing2() {}
