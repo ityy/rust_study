@@ -1,6 +1,7 @@
 //! Tasks
 //! 既然我们知道Future是什么，我们就可以运行它们！
-//! 在async-std中，任务模块负责此运行。最简单的方法是使用block_on函数：
+//! 在async-std中，tasks模块负责此运行。最简单的方法是使用block_on函数：
+//! task 即任务, 是程序模拟得线程, 一个线程多个任务, 就像一个进程多个线程一样.
 
 
 
@@ -26,7 +27,7 @@ fn test1() {
             Ok(s) => println!("{}", s),
             Err(e) => println!("Error reading file: {:?}", e)
         }
-    }); //task::spawn 和thread很类似, 用程序的办法实现线程的功能. 返回一个JoinHandle。
+    }); //task::spawn 和thread很类似, 用程序的办法实现线程的功能. 返回一个JoinHandle。 返回得是一个操作句柄, 表示代码已经在运行
     println!("Started task!");//打印结果: 此处先打印
     thread::sleep(Duration::from_secs(10));//打印了result的文件内容 程序等待10s
     task::block_on(reader_task); //类似thread的join 等待task执行完毕join回来
