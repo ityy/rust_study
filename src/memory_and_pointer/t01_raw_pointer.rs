@@ -1,4 +1,9 @@
-//! 原生指针学习
+//! 指针学习研究详解
+//! & * 操作符的本质研究
+//! move语义的研究 box指针的研究
+//! 各种指针的强转，强取内存中的数据，强取指针变量中的指针，修改内存中的数据等。
+//!
+//!
 //! 一个数据在内存中，有地址（address）和值（value）两个属性。
 //! ----------
 //! | address  |
@@ -6,9 +11,19 @@
 //! |  value   |
 //! ----------
 //!
-//! 我们用变量标识替代汇编语言中的 [0x00001111] 符号，表达某个地址处的值，可读可写。
-//! 例如一个变量a，通常a表示[0x00001111]可以读写；&a表示a的地址0x00001111；*a表示以a的值为地址处的值即[[0x00001111]]，可读可写；
-//! 一般&操作取到的地址都是栈上的地址，存放字面值或者堆上的地址及其描述信息。堆上的地址可以用as_ptr()获取, 但其会丢失描述信息。
+//! 变量的本质：
+//!     以汇编为例： mov [0x00001111],1 表示向内存地址0x00001111处写入1。
+//!     一般高级编程语言中，我们用变量标识符来替代汇编语言中的 [0x00001111] 符号，以表达某个内存地址，可读可写。
+//!     例如一个变量a，通常a表示[0x00001111]，它是一个空间，可读可写。&a表示a的地址0x00001111。
+//!     一般有且只有 &a 语义是关于变量自身的地址的，其它任何时候a都只表示变量的值。
+//! 指针变量：
+//!     由于变量都是在栈上存放，所以取到的地址都是栈上的地址。
+//!     变量存放字面值或者堆上的地址及其描述信息。如果变量存放的是一个内存地址，可以称为指针变量。
+//! &和*的关系：
+//!     例如一个变量a，假如a保存了一个内存地址，那么变量a就属于指针变量。a的值就是一个指针（内存地址）。
+//!     *a语义表示直接从a（的值）这个指针（内存地址）中取值，即[[0x00001111]]，可读可写。
+//!     一般&操作表示取内存地址，所有后面一般都是跟一个变量。
+//!     一般*操作表示从地址取值，所以后面一般都是跟一个指针。
 
 
 #[test]
@@ -89,21 +104,25 @@ fn place_expression_heap() {
     }
 
     ///打印内存模型
-    println!("\r\n-------以&x开始打印16byte的内存模型--------");
+    println!("\r\n-------以&x开始打印16byte的内存数据--------");
     let x_raw_addr_int = x_raw_addr as usize; //原始指针和usize可以互相转换, 这就为内存操作提供了无限可能
     println!("x_raw_addr_int 变量值: 0x{:X}", x_raw_addr_int);// 以16进制打印x_raw_addr_int 0x000000FA 4DEFE3B0 64位的内存地址
-    //利用x_raw_addr_int强制打印内存地址与值 彻底看清内存结构.
+    /// 强制打印内存的方法
+    /// 利用 x_raw_addr_int 强制打印内存地址与值 彻底看清内存结构.
+    /// 将整数型地址 强转为 u8型指针
+    /// 即可用解引用的方式取得存储的u8型的数据了
     unsafe {
         for i in 0..16 {
             let x = (x_raw_addr_int + i) as *mut u8;
             println!("addr:0x{:X} value:0x{:X}", x_raw_addr_int + i, *x);
         }
     }
-    // println!("变量x的值:{}", *x); //报错：doesn't have a size known at compile-time. 在编译时不知道size。
-    // 如果只使用*x，即[[0xFA4DEFE3B0]]，即[0x0000029ACC686810]，此处是't'的存放位置，又没有size约束，不像c语言以'\0'做字符串结尾。所以此处在编译时不知道size。
-    //
+    // println!("变量x的值:{}", *x); //报错：doesn't have a size known at compile-time。 在编译时不知道size。*x，即[[0xFA4DEFE3B0]]，即[0x0000029ACC686810]，
+    //                             //此处是't'的存放位置，又没有size约束，不像c语言以'\0'做字符串结尾。所以此处在编译时不知道size。
+    // println!("x 变量值: {:p}", x);//报错：the trait `std::fmt::Pointer` is not implemented for `std::string::String`。String是Rust预置的智能指针类型，
+    //                             //不能按单指针的形式打印。不像c中的String需要自己用指针实现。c中一般只有基础类型，复杂类型都要通过指针来设计实现。
     // 内存模型：
-    //   x在栈上, &x为0xFA4DEFE3B0, 值为字符串在堆上的起始地址，长度等。所以string是一个字符串类型的指针。
+    //   x在栈上, &x为0xFA4DEFE3B0, 值为字符串在堆上的起始地址，长度等。所以x是一个字符串类型的智能指针。
     //   以&x开始打印16byte：
     //   addr:0xFA4DEFE3B0 value:0x10
     //   addr:0xFA4DEFE3B1 value:0x68
@@ -125,7 +144,7 @@ fn place_expression_heap() {
     // rust中的Box,Arc,以及String等类型本质上都是智能指针.
     // 与c语言不同, c语言没有那么多类型, 所以c语言实现很多复杂类型需要自行设计. 这一点rust通过智能指针预先设计好了很多类型.
 
-    ///as_ptr() 方法研究
+    ///as_ptr() 方法研究 以及使用指针强改数据
     println!("\r\n-------as_ptr() 方法研究--------");
     let x_as_ptr = x.as_mut_ptr();//as_ptr()获取的直接是堆上的内存地址0x0000029ACC686810
     println!("x_as_ptr 变量值: {:p}", x_as_ptr);//0x0000029ACC686810
@@ -145,13 +164,53 @@ fn place_expression_heap() {
     let y_raw_addr_int = &y as *const String as usize; //取y的地址 整数形式
     println!("y_raw_addr_int：0x{:X}", y_raw_addr_int);//以Hex形式打印
     println!("y_as_ptr 变量值: {:p}", y.as_ptr());//0x0000029ACC686810
+}
 
-
-    ///Box语义研究
+///Box指针·研究
+#[test]
+fn test_box() {
     println!("\r\n-------Box--------");
-    let string_box = Box::new(y);//再次转移所有权 交给指针Box 旧指针y作废
-    println!("string_box 变量地址: {:p}", &string_box);
-    println!("string_box 变量值: {:p}", string_box);
-    println!("string_box 解引用值: {}", *string_box);
-    println!("string_box_as_ptr 变量值: {:p}", string_box.as_ptr());//0x29ACC686810 移动后堆上的内存地址是不变的
+    let z = Box::new("test".to_string());//再次转移所有权 交给指针Box 旧指针y作废
+    println!("z 变量值: {}", z);
+    println!("z 变量值(p格式): {:p}", z);//Box类型可以直接打印指针地址
+    println!("z 解引用值: {}", *z);
+    let z_as_ptr = z.as_ptr();
+    println!("z_as_ptr 变量值(p格式): {:p}", z_as_ptr);//移动后堆上的内存地址是不变的 仍为0x0000029ACC686810
+
+    println!("\r\n-------以&z开始打印24byte的内存数据(即打印Box的内容)--------");
+    let z_addr_int = &z as *const Box<String> as usize; //raw指针和usize可以互相转换, 这就为内存操作提供了无限可能
+    println!("z_addr_int 变量值: 0x{:X}", z_addr_int);// 以16进制打印z_addr_int 64位的内存地址：0x000000FA4DEFE3B0
+    //利用z_int强制打印内存地址与值 彻底看清内存结构.
+    unsafe {
+        for i in 0..24 {
+            let x = (z_addr_int + i) as *mut u8;
+            println!("addr:0x{:X} value:0x{:X}", z_addr_int + i, *x);
+        }
+    }
+    /*打印结果：
+        共24byte，前8byte为String指针，此指针被挪到了堆上。后16byte为String在堆上的地址及长度。
+    */
+    println!("\r\n-------以z_value_int开始打印16byte的内存数据--------");
+    unsafe {
+        /// 强取指针变量中保存的指针的方法：
+        /// 1 取指针变量的地址，并强转为整数型地址
+        /// 2 将整数型地址 强转为 usize型指针
+        /// 3 即可使用解引用的方式获取一个usize型的整数值
+        let z_value_int_ptr = z_addr_int as *mut usize;
+        let z_value_int = *z_value_int_ptr;
+        println!("z_value_int 变量值: 0x{:X}", z_value_int);// 以16进制打印z_int 0x000000FA 4DEFE3B0 64位的内存地址
+        //利用z_int强制打印内存地址与值 彻底看清内存结构.
+        for i in 0..16 {
+            let x = (z_value_int + i) as *mut u8;
+            println!("addr:0x{:X} value:0x{:X}", z_value_int + i, *x);
+        }
+    }
+    /*打印结果：
+        共16byte，为String在堆上的地址及长度。
+    */
+
+    /*总结：
+        增加了Box指针后，原String指针被挪到了堆上，Box指针指向堆上的String指针，String指针再指向堆上的字符串内容。
+        等于说是在中间加了一层指针包装。
+    */
 }
