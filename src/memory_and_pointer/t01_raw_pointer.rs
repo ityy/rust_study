@@ -20,6 +20,8 @@
 //!     例如一个变量a，通常a表示[0x00001111]，它是一个空间，可读可写。&a表示a的地址0x00001111。
 //!     一般有且只有 &a 语义是关于变量自身的地址的，其它任何时候a都只表示变量的值。所以大部分时候都可以忽略变量自身地址这个属性。
 //!     由于变量都是在栈上存放，所以取到的地址都是栈上的地址。
+//!     严格来讲：对于局部变量，是[ebp+xxx]的xxx 即ebp的偏移地址
+//!             对于全局变量，则是标号（）
 //! 指针变量：
 //!     存放指针的变量。它和变量这个抽象名词是同维度的。
 //!     例如一个变量a，假如a保存了一个内存地址，那么变量a就属于指针变量。a的值就是一个指针（内存地址）。
@@ -45,11 +47,11 @@ fn place_expression_stack() {
     ///safe地址类型 原生unsafe地址类型 整数型地址
     let mut x = 10;//给x赋值10 变量标识x本身代表一个栈上的内存地址，此操作为此地址赋值。
     let mut x_addr = &mut x;//取x所代表的内存地址
-    let x_raw_addr = x_addr as *mut i32;//取x的原生地址 将引用地址转为原生地址类型
-    let x_addr_value = x_raw_addr as usize;//取x的地址作为普通的整形数值 可以通过将原生地址转换为整数的形式获得。x_addr_value具有极大破坏性，突破了所有权限制，突破了可变性限制。
+    let x_addr_raw = x_addr as *mut i32;//取x的原生地址 将引用地址转为原生地址类型
+    let x_addr_int = x_addr_raw as usize;//取x的地址作为普通的整形数值 可以通过将原生地址转换为整数的形式获得。x_addr_int具有极大破坏性，突破了所有权限制，突破了可变性限制。
     println!("变量x的地址 引用类型: {:p}", x_addr);//编程中使用变量标识，都是使用它所存储的值。x_addr中存储着变量x的地址。
-    println!("变量x的地址 原生地址类型: {:p}", x_raw_addr);//{:p} 将变量的值按地址格式打印，等于打印指针。
-    println!("变量x的地址 整数类型: 0x{:X}", x_addr_value);//{:X} 将整形按16进制格式打印。
+    println!("变量x的地址 原生地址类型: {:p}", x_addr_raw);//{:p} 将变量的值按地址格式打印，等于打印指针。
+    println!("变量x的地址 整数类型: 0x{:X}", x_addr_int);//{:X} 将整形按16进制格式打印。
     /*打印结果：
         变量x的地址 引用类型: 0x2d633ff154
         变量x的地址 原生地址类型: 0x2d633ff154
@@ -58,13 +60,7 @@ fn place_expression_stack() {
     */
 
     ///使用unsafe块 从任意整数型地址取值
-    unsafe {
-        //从x_addr_value开始, 打印4个字节的内存
-        for i in 0..4 {
-            let x = (x_addr_value + i) as *mut u8;//将整数型地址 转回原生地址类型 此处要打印字节，所以按u8类型处理
-            println!("addr:0x{:X} value:0x{:X}", x_addr_value + i, *x);
-        }
-    }
+    print_addr_and_value(x_addr_int, 4);
     /*打印结果：栈上内存直接存放着值, 没有堆上内存地址这一中间信息
         addr:0x2D633FF154 value:0xA
         addr:0x2D633FF155 value:0x0
@@ -191,15 +187,10 @@ fn test_box() {
     println!("z_as_ptr 变量值(p格式): {:p}", z_as_ptr);//移动后堆上的内存地址是不变的 仍为0x0000029ACC686810
 
     println!("\r\n-------以&z开始打印24byte的内存数据(即打印Box的内容)--------");
-    let z_addr_int = &z as *const Box<String> as usize; //raw指针和usize可以互相转换, 这就为内存操作提供了无限可能
+    let z_addr_int = convert_addr_to_int(&z);
     println!("z_addr_int 变量值: 0x{:X}", z_addr_int);// 以16进制打印z_addr_int 64位的内存地址：0x000000FA4DEFE3B0
-    //利用z_int强制打印内存地址与值 彻底看清内存结构.
-    unsafe {
-        for i in 0..24 {
-            let x = (z_addr_int + i) as *mut u8;
-            println!("addr:0x{:X} value:0x{:X}", z_addr_int + i, *x);
-        }
-    }
+    //打印内存地址与值 看清内存结构.
+    print_addr_and_value(z_addr_int, 24);
     /*打印结果：
         共24byte，前8byte为String指针，此指针被挪到了堆上。后16byte为String在堆上的地址及长度。
     */
@@ -226,4 +217,30 @@ fn test_box() {
         增加了Box指针后，原String指针被挪到了堆上，Box指针指向堆上的String指针，String指针再指向堆上的字符串内容。
         等于说是在中间加了一层指针包装。
     */
+}
+
+///多重Box
+#[test]
+fn testBox2() {
+    let x = Box::new("hello".to_string());
+    let y = Box::new(x);
+    let z = Box::new(y);
+    println!("{}", ***z);
+    let z_addr_int = convert_addr_to_int(&z);
+    print_addr_and_value(z_addr_int, 24);
+}
+
+///将内存地址转为整数类型
+fn convert_addr_to_int<T>(t: &T) -> usize {
+    t as *const T as usize //rust指针和raw指针 raw指针和usize 可以互相转换, 这就为内存操作提供了无限可能
+}
+
+///打印内存地址
+fn print_addr_and_value(addr_begin: usize, byte_count: usize) {
+    unsafe {
+        for i in 0..byte_count {
+            let x = (addr_begin + i) as *mut u8;//将整数型地址，转回raw指针。此处要打印字节，所以按u8类型处理。
+            println!("addr:0x{:X} value:0x{:X}", addr_begin + i, *x); //读地址处的值非常方便，使用*操作符即可。这两句理论上可以获取任意内存地址上的值。
+        }
+    }
 }
