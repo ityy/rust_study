@@ -4,7 +4,6 @@
 //! move语义的研究 box指针的研究
 //! 各种指针的强转，强取内存中的数据，强取指针变量中的内存地址，修改内存中的数据等。
 //!
-//!
 //! 一个数据在内存中，有地址（address）和值（value）两个属性。
 //! ----------
 //! | address  |
@@ -172,41 +171,31 @@ fn memory_heap() {
 ///Box指针·研究
 #[test]
 fn test_box() {
-    println!("\r\n-------Box--------");
-    let z = Box::new("test".to_string());//再次转移所有权 交给指针Box 旧指针y作废
-    println!("z 变量值: {}", z);
-    println!("z 变量值(p格式): {:p}", z);//Box类型可以直接打印指针地址
-    println!("z 解引用值: {}", *z);
-    let z_as_ptr = z.as_ptr();
-    println!("z_as_ptr 变量值(p格式): {:p}", z_as_ptr);//移动后堆上的内存地址是不变的 仍为0x0000029ACC686810
+    println!("\r\n-------Box智能指针解析--------");
+    let box_smart_ptr = Box::new("test".to_string());//再次转移所有权 交给指针Box 旧指针y作废
+    println!("box_smart_ptr 变量值: {}", box_smart_ptr);
+    println!("box_smart_ptr 变量值(p格式): {:p}", box_smart_ptr);//Box类型可以直接打印指针地址
+    println!("box_smart_ptr 解引用值: {}", *box_smart_ptr);
+    let content_ptr = box_smart_ptr.as_ptr();
+    println!("content_ptr 变量值(p格式): {:p}", content_ptr);//移动后堆上的内存地址是不变的 仍为0x0000029ACC686810
 
-    println!("\r\n-------以&z开始打印24byte的内存数据(即打印Box的内容)--------");
-    let z_addr_int = &z as *const Box<String> as usize; //raw指针和usize可以互相转换, 这就为内存操作提供了无限可能
-    println!("z_addr_int 变量值: 0x{:X}", z_addr_int);// 以16进制打印z_addr_int 64位的内存地址：0x000000FA4DEFE3B0
-    //利用z_int强制打印内存地址与值 彻底看清内存结构.
-    unsafe {
-        for i in 0..24 {
-            let x = (z_addr_int + i) as *mut u8;
-            println!("addr:0x{:X} value:0x{:X}", z_addr_int + i, *x);
-        }
-    }
+    println!("\r\n-------Box智能指针 内存结构--------");
+    let box_addr_int = convert_addr_to_int(&box_smart_ptr);
+    println!("box_addr_int 变量值: 0x{:X}", box_addr_int);// 以16进制打印z_addr_int 64位的内存地址：0x000000FA4DEFE3B0
+    print_addr_and_value(box_addr_int, 24);
     /*打印结果：
-        共24byte，前8byte为String指针，此指针被挪到了堆上。后16byte为String在堆上的地址及长度。
+        共24byte，前8byte为String智能指针的地址，此指针被挪到了堆上。后16byte为content在堆上的地址及长度。
     */
-    println!("\r\n-------以z_value_int开始打印16byte的内存数据--------");
+    println!("\r\n-------以box_value_int开始打印16byte的内存数据--------");
     unsafe {
         /// 强取指针变量中保存的指针的方法：
         /// 1 取指针变量的地址，并强转为整数型地址
         /// 2 将整数型地址 强转为 usize型指针
         /// 3 即可使用解引用的方式获取一个usize型的整数值
-        let z_value_int_ptr = z_addr_int as *mut usize;
-        let z_value_int = *z_value_int_ptr;
-        println!("z_value_int 变量值: 0x{:X}", z_value_int);// 以16进制打印z_int 0x000000FA 4DEFE3B0 64位的内存地址
-        //利用z_int强制打印内存地址与值 彻底看清内存结构.
-        for i in 0..16 {
-            let x = (z_value_int + i) as *mut u8;
-            println!("addr:0x{:X} value:0x{:X}", z_value_int + i, *x);
-        }
+        let box_usize_ptr = box_addr_int as *mut usize;
+        let box_value_int = *box_usize_ptr;
+        println!("box_value_int 变量值: 0x{:X}", box_value_int);// 以16进制打印z_int 0x000000FA 4DEFE3B0 64位的内存地址
+        print_addr_and_value(box_value_int, 16);
     }
     /*打印结果：
         共16byte，为String在堆上的地址及长度。
