@@ -5,3 +5,4 @@
 
 pub mod t2_3_variable_and_binding;
 pub mod t2_7_2_struct;
+pub mod t2_4_function;
