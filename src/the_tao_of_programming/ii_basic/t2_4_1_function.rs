@@ -52,10 +52,12 @@ pub fn function_is_variable() {
     println!("{}", true_maker()());//这里没问题，调用函数true_maker返回了一个函数，继续调用
 }
 
-/// CTFE 机制
-/// 编译时执行
+/// CTFE机制 （编译时执行）
 #[test]
 fn ctfe_test() {
+    //必须为const函数 否则：
+    //error[E0015]: calls in constants are limited to constant functions, tuple structs and tuple variants
+    // const函数：必须可以确定值，不能存在歧义。const函数可以在编译期执行。
     const fn init_len() -> usize {
         5
     }

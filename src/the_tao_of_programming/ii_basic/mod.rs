@@ -5,4 +5,7 @@
 
 pub mod t2_3_variable_and_binding;
 pub mod t2_7_2_struct;
-pub mod t2_4_function;
+pub mod t2_4_1_function;
+pub mod t2_4_5_closure;
+pub mod t2_5_1_if_for_while;
+pub mod t2_5_3_match;
