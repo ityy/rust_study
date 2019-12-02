@@ -31,6 +31,8 @@
 //! &和*的关系：
 //!     一般&操作表示取变量的内存地址，所有后面一般都是跟一个变量。&的语义在变量维度，不关注变量的值。严格以维度区分，可避免错误。
 //!     一般*操作表示从内存地址中取值，所以后面一般都是跟一个指针。*的语义在值的维度，与+ -等各类运算符一致。
+//! 解指针(解引用):
+//!     设a为指针,规定解指针(解引用)操作为*a。其表示获得以指针值为起始内存地址，以指针类型为类型的对象。
 //! 总结：
 //!     不管是传统变量，还是指针，智能指针：我们关注变量的时候，更多的是关注变量的值和类型，极少关注变量自身的地址。
 //!     看到变量，只要没有&取地址操作，那都只需要关注变量值即可。
@@ -197,6 +199,9 @@ fn test_box() {
         println!("box_value_int 变量值: 0x{:X}", box_value_int);// 以16进制打印z_int 0x000000FA 4DEFE3B0 64位的内存地址
         print_addr_and_value(box_value_int, 16);
     }
+    /// 整数型地址 转回Rust引用
+    let temp = unsafe { convert_int_to_addr::<Box<String>>(box_addr_int) };
+    println!("整数型地址，转回Rust引用：{}", temp);
     /*打印结果：
         共16byte，为String在堆上的地址及长度。
     */
@@ -219,12 +224,19 @@ fn testBox2() {
     print_addr_and_value(z_addr_int, 24);
 }
 
-///将内存地址转为整数类型
+///将内存地址(Rust引用型)转为整数类型
 pub fn convert_addr_to_int<T>(t: &T) -> usize {
     //rust引用和raw指针 raw指针和usize 可以互相转换, 这就为内存操作提供了无限可能
     //*const表示原生不可变指针， *mut表示原生可变指针。
     t as *const T as usize
 }
+
+///将整数类型转为内存地址(Rust引用型)
+pub unsafe fn convert_int_to_addr<'a, T>(addr: usize) -> &'a T {
+    let raw_ptr = addr as *const T;//1 将整数型地址转为原生指针,并指定类型
+    &*raw_ptr//2 解引用原生指针得到具体类型的对象,再取地址(即Rust指针,即Rust引用)
+}
+
 
 ///打印内存地址
 pub fn print_addr_and_value(addr_begin: usize, byte_count: usize) {
