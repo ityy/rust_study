@@ -12,7 +12,6 @@ use std::fs::File;
 use func::test1::two_sum;
 
 ///以文件夹为mod的, 文件夹内必须有一个mod.rs存放模块源码
-mod func;
 mod sliceT;
 mod optionT;
 mod collections;
