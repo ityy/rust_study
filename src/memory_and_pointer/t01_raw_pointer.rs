@@ -199,13 +199,13 @@ fn test_box() {
         println!("box_value_int 变量值: 0x{:X}", box_value_int);// 以16进制打印z_int 0x000000FA 4DEFE3B0 64位的内存地址
         print_addr_and_value(box_value_int, 16);
     }
-    /// 整数型地址 转回Rust引用
-    let temp = unsafe { convert_int_to_addr::<Box<String>>(box_addr_int) };
-    println!("整数型地址，转回Rust引用：{}", temp);
     /*打印结果：
         共16byte，为String在堆上的地址及长度。
     */
 
+    /// 整数型地址 转回Rust引用
+    let temp = unsafe { convert_int_to_addr::<Box<String>>(box_addr_int) };
+    println!("整数型地址，转回Rust引用：{}", temp);
     /*总结：
         增加了Box指针后，原String指针被挪到了堆上，Box指针指向堆上的String指针，String指针再指向堆上的字符串内容。
         等于说是在中间加了一层指针包装。
