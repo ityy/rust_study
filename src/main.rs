@@ -34,7 +34,7 @@ mod thread_study;
 mod async_study;
 mod data_structure;
 mod lock_test;
-mod the_tao_of_programming;
+mod b02_the_tao_of_programming;
 
 
 ///主方法, 运行其它学习单元的主方法
