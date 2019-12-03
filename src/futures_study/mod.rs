@@ -1,4 +1,4 @@
-//!Rust Future 最佳实践
+//! Rust Future 最佳实践
 //! 学习代码记录
 pub mod future_012_chain_error;
 pub mod future_011_chain;

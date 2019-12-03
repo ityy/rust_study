@@ -7,7 +7,7 @@ use futures::Future;
 use futures::future::ok;
 use tokio_core::reactor::Core;
 
-use crate::futures_test::future_012_chain_error::{ErrorA, ErrorB};
+use crate::futures_study::future_012_chain_error::{ErrorA, ErrorB};
 
 //原始function
 fn my_fn() -> Result<u32, Box<Error>> {
