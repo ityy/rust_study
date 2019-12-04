@@ -22,7 +22,6 @@ mod into_from;
 mod web_server;
 mod http_req;
 mod lazy_static_test;
-mod cow_test;
 mod memory_and_pointer;
 mod range_test;
 mod futures_study;

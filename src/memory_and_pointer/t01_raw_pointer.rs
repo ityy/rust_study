@@ -96,7 +96,7 @@ fn memory_heap() {
     /// 凡是变量绑定了一个堆上内存的目标对象时，变量均为指针变量，其存放着目标对象在堆上的内存地址。
     // x是一个位置表达式 右边字面量是一个值表达式
     // to_string()函数将"test"放在堆中，并返回一个String类型智能指针。
-    // 此时x为一个String类型的智能指针(smart pointer)。
+    // 此时x为一个String类型的智能指针(smart pointer),存放着堆上内存的地址以及字符串的长度等元信息。
     let mut x = "test".to_string();
     println!("x 变量值: {}", x);//打印x println!会自动处理解引用
     // println!("x 变量值: {}", *x); //报错：doesn't have a size known at compile-time。 在编译时不知道size。*x，即[[0xFA4DEFE3B0]]，即[0x0000029ACC686810]，
@@ -107,7 +107,7 @@ fn memory_heap() {
     /// 指针转换
     println!("\r\n-------指针转换--------");
     let x_ptr = &x; //取x的地址放入x_ptr
-    println!("x_ptr 变量值: {:p}", x_ptr);//将其值按内存地址格式打印
+    println!("x的地址: {:p}", x_ptr);//将其值按内存地址格式打印
     println!("x_ptr 解引用值: {}", *x_ptr);//*加不加都可以, println!可以自动解引用来打印值. 只有用{:p}才会打印地址.
     let x_mut_ptr = &mut x; //此处获取了x的可变借用，则之后不能再使用x_ptr（x的不可变借用），否则报错。
     println!("x_mut_ptr 变量值: {:p}", x_mut_ptr);
