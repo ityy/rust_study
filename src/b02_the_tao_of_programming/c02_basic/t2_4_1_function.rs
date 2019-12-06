@@ -1,7 +1,9 @@
 //! 函数
 
 /// Rust中，使用fn关键字定义函数
-pub fn this_is_function(params: i32) -> i32 {
+/// 函数名必须为蛇形命名法（snake_case）
+pub fn this_is_function(params: i32) -> i32 {//函数签名
+    //函数体
     params
 }
 
