@@ -10,3 +10,4 @@ mod t6_1_5_method;
 mod t6_1_6_high_level_function;
 mod t6_2_0_closure;
 mod t6_3_0_iterator;
+mod t6_3_4_iterator_adaptor;

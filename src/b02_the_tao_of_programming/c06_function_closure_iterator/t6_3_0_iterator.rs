@@ -82,3 +82,32 @@ fn impl_iterator() {
         println!("{}", i);
     }
 }
+
+
+/// IntoIterator trait
+/// 如果想迭代某个集合容器中的元素，必须将其转换为迭代器才可以使用。那么迭代器到底是什么？
+/// 前面讲过From和Into互为反操作，但迭代器没有用到这两个特性，而是使用了两个新特性：
+///     FromIterator
+///     IntoIterator
+///
+#[test]
+fn test_IntoIterator() {
+    struct Counter {
+        count: usize,
+    }
+    impl Iterator for Counter {
+        type Item = usize;
+
+        fn next(&mut self) -> Option<Self::Item> {
+            self.count += 1;
+            if self.count < 6 { Some(self.count) } else { None }
+        }
+    }
+    let mut counter = Counter { count: 1 };
+    for i in counter.into_iter() {
+        println!("{}", i);
+    }
+}
+
+
+
