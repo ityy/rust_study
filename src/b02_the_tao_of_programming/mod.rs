@@ -5,3 +5,4 @@ mod c02_basic;
 mod c03_type_system;
 mod c05_ownership;
 mod c06_function_closure_iterator;
+mod c07_structured_programming;
