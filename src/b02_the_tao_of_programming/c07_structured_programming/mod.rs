@@ -14,3 +14,4 @@
 mod t7_1_0_oop;
 mod t7_1_1_struct_color;
 mod t7_1_2_enum_color;
+mod t7_2_0_design_mode;
