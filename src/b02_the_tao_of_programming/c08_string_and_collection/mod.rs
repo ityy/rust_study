@@ -7,3 +7,7 @@
 mod t8_1_0_stirng;
 mod t8_1_1_char;
 mod t8_1_4_string_handling;
+mod t8_1_8_sum_of_diagonals;
+mod t8_2_0_collection;
+mod t8_2_1_vec;
+mod t8_2_2_map;
