@@ -28,3 +28,7 @@ tokio-core = "0.1.17"
 chrono = "0.4.7"
 time = "0.1"
 async-std = "1.2.0"
+
+#error lib
+failure = "0.1.6"
+failure_derive = "0.1.6"
