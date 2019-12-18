@@ -32,14 +32,14 @@ fn test_move() {
 /// 但不会自动实现，需要手动加上derive。
 /// 元组的元素如果都为Copy型，则元组会自动实现Copy。
 #[derive(Debug, Copy, Clone)]
-struct structA {
+struct StructA {
     a: i32,
     b: i32,
 }
 
 #[test]
 fn test_copy() {
-    let a = structA { a: 1, b: 2 };
+    let a = StructA { a: 1, b: 2 };
     let b = a;
     println!("{:?}", a); //run is OK
 }

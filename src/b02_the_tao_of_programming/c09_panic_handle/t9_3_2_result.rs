@@ -23,7 +23,7 @@ fn test_result() {
     assert_eq!(n.parse::<i32>(), Ok(1));
     let n = "a";
     let result = n.parse::<i32>();
-    println!("{:?}", result);// Err(ParseIntError { kind: InvalidDigit })
+    println!("{:?}", result); // Err(ParseIntError { kind: InvalidDigit })
 }
 
 /// 高效处理 Result<T,E>
@@ -46,12 +46,11 @@ fn test_combinator() {
     /// 使用类型别名，简化Result<T,E>。这是Rust中常用的方法，各大库包中都可以看到这种用法。
     /// 如下别名演示，这样并没有起到简化的作用，我们改造一下，将泛型E直接指明：
     type ParseRusult_<T, E> = Result<T, E>;
-    type ParseRusult<T> = Result<T, ParseIntError>;// 别名只给了一个泛型T，所以Result中需要指明E的类型。
+    type ParseRusult<T> = Result<T, ParseIntError>; // 别名只给了一个泛型T，所以Result中需要指明E的类型。
 
     fn square_simplify(number: &str) -> ParseRusult<i32> {
         number.parse::<i32>().map(|n| n.pow(2))
     }
-
 
     /// and_then方法 和Option类似，在正确时按闭包处理，并返回闭包的结果（适合闭包返回值也是Result的情况）
     /// 在错误时，直接返回错误。
@@ -61,7 +60,10 @@ fn test_combinator() {
         // 由于map和and_then返回的值和错误的类型都不相同，使得函数签名上的Result的泛型T E不知道怎么赋值，这块无法实现。解决方法有二：
         //      1 自定义统一的错误类型，使得其它错误都可以对应到统一错误类型中的某一个错误。IO操作的Error即是如此。
         //      2 使用特性对象，Rust提供了Error trait，Rust中的所有错误都实现了这一特性。
-        let x = number.parse::<i32>().map(|n| n.pow(2)).and_then(|n: i32| Ok(n.to_string()));
+        let x = number
+            .parse::<i32>()
+            .map(|n| n.pow(2))
+            .and_then(|n: i32| Ok(n.to_string()));
         x
     }
 
@@ -70,7 +72,6 @@ fn test_combinator() {
         Err(e) => println!("Error:{:?}", e),
     }
 }
-
 
 /// 处理不同类型的错误
 /// test_read_error_count()函数展示了一个函数内部多种不同错误的情形。从文件读取每行的数字，返回它们的和。
@@ -85,13 +86,13 @@ fn test_read_error_count() {
 
     // 由于IDE直接运行的缘故，不便获取命令行参数，所以直接给定文件名。
     let filename = "D:\\yang_rust\\rust_study\\src\\b02_the_tao_of_programming\\c09_panic_handle\\test_sum.txt";
-    let mut file = File::open(filename).unwrap();// 读不出文件报错
+    let mut file = File::open(filename).unwrap(); // 读不出文件报错
     let mut centents = String::new();
     //read_to_string() 需要文件内容为utf8编码，会返回读取到的字节数
-    file.read_to_string(&mut centents).unwrap();// 内容无法解析报错
+    file.read_to_string(&mut centents).unwrap(); // 内容无法解析报错
     let mut sum = 0;
     for c in centents.lines() {
-        sum += c.parse::<i32>().unwrap();// 内容不能转为数字报错
+        sum += c.parse::<i32>().unwrap(); // 内容不能转为数字报错
     }
     println!("{:?}", sum);
 }
@@ -102,36 +103,42 @@ fn test_read_error_count() {
 /// 由于特性对象动态分发的特性，其性能是不如自定义统一错误类型的，但其方便程度要强于自定义统一错误类型。
 /// 我们使用第2个办法，重构test_read_error_count()函数,并使用组合子书写业务逻辑：
 fn test_read_error_trait(filename: &str) -> Result<i32, Box<dyn Error>> {
-    let result = File::open(filename).map_err(// map_err和map 操作相同，目标相反：map只处理Ok的值，Err原样返回。map_err只处理Err的值，Ok原样返回。
-                                              |e| e.into()// 通过into()方法，将Err转为Box<dyn Error>类型。
-    ).and_then(|mut file| {
-        let mut centents = String::new();
-        //read_to_string() 需要文件内容为utf8编码，会返回读取到的字节数
-        file.read_to_string(&mut centents).map_err(|e| e.into())// 通过into()方法，将Err转为Box<dyn Error>类型。
-            .map(|_| centents)// 正确时返回centents 将处理交给下一个调用链。也可直接在这里处理，但代码结构不够优美。
-    }).and_then(|centents| {
-        let mut sum = 0;
-        for c in centents.lines() {
-            match c.parse::<i32>() {
-                // 只在转换成功时计算
-                Ok(n) => { sum += n; }
-                // 转换失败只打印信息
-                Err(e) => {
-                    // 手动转换为Box<dyn Error>
-                    let e: Box<dyn Error> = e.into();
-                    // 打印dyn Error的信息
-                    println!("error info:{},cause:{:?}", e.description(), e.cause());
-                    // 也可以直接中断，将e返回出去
-                    // return Err(e);
+    let result = File::open(filename)
+        .map_err(
+            // map_err和map 操作相同，目标相反：map只处理Ok的值，Err原样返回。map_err只处理Err的值，Ok原样返回。
+            |e| e.into(), // 通过into()方法，将Err转为Box<dyn Error>类型。
+        )
+        .and_then(|mut file| {
+            let mut centents = String::new();
+            //read_to_string() 需要文件内容为utf8编码，会返回读取到的字节数
+            file.read_to_string(&mut centents)
+                .map_err(|e| e.into()) // 通过into()方法，将Err转为Box<dyn Error>类型。
+                .map(|_| centents) // 正确时返回centents 将处理交给下一个调用链。也可直接在这里处理，但代码结构不够优美。
+        })
+        .and_then(|centents| {
+            let mut sum = 0;
+            for c in centents.lines() {
+                match c.parse::<i32>() {
+                    // 只在转换成功时计算
+                    Ok(n) => {
+                        sum += n;
+                    }
+                    // 转换失败只打印信息
+                    Err(e) => {
+                        // 手动转换为Box<dyn Error>
+                        let e: Box<dyn Error> = e.into();
+                        // 打印dyn Error的信息
+                        println!("error info:{},cause:{:?}", e.description(), e.source());
+                        // 也可以直接中断，将e返回出去
+                        // return Err(e);
+                    }
                 }
             }
-        }
-        // 返回结果
-        Ok(sum)
-    });
+            // 返回结果
+            Ok(sum)
+        });
     result
 }
-
 
 /// try!宏 简化错误处理
 /// 直接提取正确结果，如果是错误则向外传播出去。
@@ -146,7 +153,7 @@ fn test_read_error_try(filename: &str) -> Result<i32, Box<dyn Error>> {
     file.read_to_string(&mut centents)?;
     let mut sum = 0;
     for c in centents.lines() {
-        sum += c.parse::<i32>()?;//由于？是遇到错误则直接抛出，有些场景并不适合。
+        sum += c.parse::<i32>()?; //由于？是遇到错误则直接抛出，有些场景并不适合。
     }
     Ok(sum)
 }
@@ -158,6 +165,6 @@ fn test() {
     let result = test_read_error_try("D:\\yang_rust\\rust_study\\src\\b02_the_tao_of_programming\\c09_panic_handle\\test_sum.txt");
     match result {
         Ok(n) => println!("sum is {}", n),
-        Err(e) => println!("error info:{},cause:{:?}", e.description(), e.cause()),
+        Err(e) => println!("error info:{},cause:{:?}", e.description(), e.source()),
     }
 }

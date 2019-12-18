@@ -5,7 +5,7 @@
 //! 将自由变量和自身绑定的函数就是闭包。
 
 /// 捕获环境变量演示
-fn counter(i: i32) -> Box<Fn(i32) -> i32> {
+fn counter(i: i32) -> Box<dyn Fn(i32) -> i32> {
     // 实现一个可定义的增加固定步进的函数
     // 如果使用函数，就无法可定义，只能在函数内部定好参数
     fn inc(s: i32) -> i32 {
@@ -42,7 +42,7 @@ fn test_principle() {
     /// 知道了此原理，我们就知道为什么闭包可以用特性对象来做类型限定了。
     /// 还可以指定闭包的类型：
     let env_var = 1;
-    let c1: Box<Fn() -> i32> = Box::new(|| env_var + 2);
+    let c1: Box<dyn Fn() -> i32> = Box::new(|| env_var + 2);
     // 其实Fn FnOnce FnMut都是特性，其正常写法应该如下所示，但编译器为这三个特性专门做了一种强制性的简便写法，如上所示。
     // let c1: Box<Fn<(), Output=i32>> = Box::new(|| env_var + 2);
 }

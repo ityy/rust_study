@@ -65,7 +65,7 @@ impl MyStream {
 /// 给MyStream增加特性
 impl Stream for MyStream {
     type Item = u32;
-    type Error = Box<Error>;
+    type Error = Box<dyn Error>;
 
     //形参传递了一个可变引用, 所以我们可以改变MyStream内部的值
     fn poll(&mut self) -> Poll<Option<Self::Item>, Self::Error> {

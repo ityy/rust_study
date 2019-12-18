@@ -13,7 +13,7 @@ fn test_match() {
         //只匹配0
         0 => println!("is 0"),
         //范围匹配
-        1...3 => println!("is 1 to 3"),
+        1..=3 => println!("is 1 to 3"),
         //或
         5 | 6 | 7 => println!("is 5 or 6 or 7"),
         //绑定模式：可以将值绑定到变量 供后面的操作使用
@@ -30,11 +30,10 @@ fn test_let() {
     //if let 适用于单次匹配判断
     let x = 42;
     let mut binary = 0;
-    if let x = 42 {
+    if let 42 = x {
         binary += 1;
     }
     assert_eq!(binary, 1);
-
 
     //while let 适用于多次匹配判断
     let mut v = vec![1, 2, 3, 4, 5];
@@ -49,5 +48,3 @@ fn test_let() {
         1
     */
 }
-
-

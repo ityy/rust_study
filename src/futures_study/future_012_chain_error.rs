@@ -1,8 +1,9 @@
 //! 测试future的chain必须返回同一类型的Error
 use std::{error, fmt};
+use std::error::Error;
 
-use futures::Future;
 use futures::future::{err, ok};
+use futures::Future;
 use tokio_core::reactor::Core;
 
 ///自定义两个错误:ErrorA ErrorB
@@ -22,7 +23,12 @@ impl error::Error for ErrorA {
         "Description for ErrorA"
     }
 
-    fn cause(&self) -> Option<&error::Error> {
+    //过时，由source替代
+    //    fn cause(&self) -> Option<&dyn Error> {
+    //        None
+    //    }
+
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
         None
     }
 }
@@ -44,11 +50,10 @@ impl error::Error for ErrorB {
         "Description for ErrorB"
     }
 
-    fn cause(&self) -> Option<&error::Error> {
+    fn cause(&self) -> Option<&dyn Error> {
         None
     }
 }
-
 
 fn fut_error_a() -> impl Future<Item=(), Error=ErrorA> {
     err(ErrorA {})
@@ -61,18 +66,15 @@ fn fut_error_b() -> impl Future<Item=(), Error=ErrorB> {
 pub fn main() {
     let mut reactor = Core::new().unwrap();
 
-
     ///分开的方式 没有问题
     let retval = reactor.run(fut_error_a()).unwrap_err();
     println!("fut_error_a == {:?}", retval);
     let retval = reactor.run(fut_error_b()).unwrap_err();
     println!("fut_error_b == {:?}", retval);
 
-
     ///合并为chain链式调用 则报错
     /// 后一个chain里返回的错误类型和第一个方法里的不一致. 类型必须统一.
-//    let future = fut_error_a().and_then(|_| fut_error_b());
-
+    //    let future = fut_error_a().and_then(|_| fut_error_b());
 
     ///使用map_err()转换错误类型
     let future = fut_error_a()

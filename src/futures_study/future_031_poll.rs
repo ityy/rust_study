@@ -36,7 +36,7 @@ impl Future for WaitForIt {
     //定义返回类型Item
     type Item = String;
     //定义返回类型Error
-    type Error = Box<Error>;
+    type Error = Box<dyn Error>;
 
     ///实现poll方法
     fn poll(&mut self) -> Poll<Self::Item, Self::Error> {

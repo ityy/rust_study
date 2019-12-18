@@ -114,7 +114,7 @@ pub fn primitive_test() {
 /// 我们要做的是创建另一个睡眠线程. 睡眠的线程是不会占用CPU资源。所以Reactor还会高效的工作着。当这个Sleep Thread醒来后, 它会Unpark这个任务, 并且通知Reactor。
 impl Future for WaitInAnotherThread {
     type Item = ();
-    type Error = Box<Error>;
+    type Error = Box<dyn Error>;
 
     fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
         println!("轮询WaitInAnotherThread:开始");
