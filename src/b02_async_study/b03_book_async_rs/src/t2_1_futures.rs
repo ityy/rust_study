@@ -7,8 +7,8 @@ use std::result::Result::Ok;
 
 use async_std::{fs::File, io, prelude::*, task};
 
-///Let's have a look at a simple function, specifically the return value:
-///让我们看一个简单的函数
+/// Let's have a look at a simple function, specifically the return value:
+/// 让我们看一个简单的函数
 /// 你可以在任何时候调用它，所以你可以完全控制何时调用它。
 /// 但问题是:在调用它的那一刻，您将控制权转移到被调用的函数，直到它返回一个值——最终。
 /// 注意，这个返回值谈论的是过去。过去有一个缺点:所有的决定都已做出。

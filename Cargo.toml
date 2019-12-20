@@ -15,13 +15,12 @@ members=[
 "src/b02_async_study/b03_book_async_rs",
 "src/b02_async_study/futures_study_v016",
 "src/b02_async_study/b02_async_book",
+"src/http_client/study_http_req",
 ]
 
 [dependencies]
-#for http request
-reqwest = "0.9.19"
 
-http_req = "0.5.3"
+
 lazy_static = "1.3.0"
 
 #error lib
