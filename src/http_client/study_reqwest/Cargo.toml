@@ -1,0 +1,11 @@
+[package]
+name = "study_reqwest"
+version = "0.1.0"
+authors = ["yangyang <ofyang@qq.com>"]
+edition = "2018"
+#指明所在工作空间的根路径
+workspace = "../../.."
+
+[dependencies]
+#for http client
+reqwest = "0.9.19"

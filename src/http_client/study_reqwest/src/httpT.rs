@@ -2,7 +2,8 @@ extern crate reqwest;
 
 use std::collections::HashMap;
 
-pub fn main() {
+#[test]
+pub fn test() {
     h2();
 }
 
