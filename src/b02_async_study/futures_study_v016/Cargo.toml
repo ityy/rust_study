@@ -1,0 +1,15 @@
+[package]
+name = "futures_study_v016"
+version = "0.1.0"
+authors = ["yangyang <ofyang@qq.com>"]
+edition = "2018"
+#指明所在工作空间的根路径
+workspace = "../../.."
+
+[dependencies]
+#actor future
+futures = "0.1.29"
+tokio-core = "0.1.17"
+#datetime lib
+chrono = "0.4.7"
+time = "0.1"

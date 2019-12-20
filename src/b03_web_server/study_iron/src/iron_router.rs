@@ -1,10 +1,8 @@
-extern crate iron;
-extern crate router;
-
 use std::io::Read;
 
 use iron::prelude::*;
 use iron::status;
+
 use router::Router;
 use serde::{Deserialize, Serialize};
 use serde_json::{Result, Value};
@@ -15,7 +13,8 @@ struct Greeting {
     message: String,
 }
 
-pub fn main() {
+#[test]
+pub fn test() {
     let port = "localhost:80";
 
     //创建路由

@@ -19,18 +19,14 @@ mod httpT;
 mod stringT;
 mod patternT;
 mod into_from;
-mod web_server;
 mod http_req;
 mod lazy_static_test;
-mod memory_and_pointer;
+mod b04_memory_and_pointer;
 mod range_test;
-mod futures_study;
 mod thread_study;
-mod async_study;
-mod async_study2;
 mod data_structure;
 mod lock_test;
-mod b02_the_tao_of_programming;
+mod b01_the_tao_of_programming;
 
 
 ///主方法, 运行其它学习单元的主方法

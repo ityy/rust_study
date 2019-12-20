@@ -6,6 +6,7 @@ use std::thread;
 /// 在一个典型的多线程应用里，如果你想同时下载两个不同的网页，你必须将这两项工作分配到两个不同的线程上，
 /// 像这样：
 /// ```no_run
+/// use std::thread;
 /// fn get_two_sites1() {
 ///     // 创建两个线程分别执行各自的下载任务
 ///     let thread_one = thread::spawn(|| download("https:://www.foo.com"));
@@ -42,3 +43,8 @@ fn nothing1() {}
 /// 传统多线程应用也可以非常有效，Rust的较小的内存占用以及可预测性意味着你可以做更多的事，即使不使用 async 关键字。
 /// 然而，异步编程模型增长的复杂性并不总是值得的，想清楚你的应用采用简单多线程模型是否会更好仍然是很重要的。
 fn nothing2() {}
+
+#[test]
+fn test() {
+
+}

@@ -1,0 +1,10 @@
+[package]
+name = "b03_book_async_rs"
+version = "0.1.0"
+authors = ["yangyang <ofyang@qq.com>"]
+edition = "2018"
+#指明所在工作空间的根路径
+workspace = "../../.."
+
+[dependencies]
+async-std = "1.3.0"

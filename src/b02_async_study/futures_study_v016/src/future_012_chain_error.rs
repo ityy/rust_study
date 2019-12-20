@@ -66,17 +66,17 @@ fn fut_error_b() -> impl Future<Item=(), Error=ErrorB> {
 pub fn main() {
     let mut reactor = Core::new().unwrap();
 
-    ///分开的方式 没有问题
+    //分开的方式 没有问题
     let retval = reactor.run(fut_error_a()).unwrap_err();
     println!("fut_error_a == {:?}", retval);
     let retval = reactor.run(fut_error_b()).unwrap_err();
     println!("fut_error_b == {:?}", retval);
 
-    ///合并为chain链式调用 则报错
-    /// 后一个chain里返回的错误类型和第一个方法里的不一致. 类型必须统一.
+    //合并为chain链式调用 则报错
+    // 后一个chain里返回的错误类型和第一个方法里的不一致. 类型必须统一.
     //    let future = fut_error_a().and_then(|_| fut_error_b());
 
-    ///使用map_err()转换错误类型
+    //使用map_err()转换错误类型
     let future = fut_error_a()
         .map_err(|e| {
             println!("mapping {:?} into ErrorB", e);

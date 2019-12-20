@@ -1,0 +1,10 @@
+[package]
+name = "b02_async_book"
+version = "0.1.0"
+authors = ["yangyang <ofyang@qq.com>"]
+edition = "2018"
+#指明所在工作空间的根路径
+workspace = "../../.."
+
+[dependencies]
+futures = "0.3.1"
