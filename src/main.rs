@@ -21,7 +21,6 @@ mod into_from;
 mod lazy_static_test;
 mod b04_memory_and_pointer;
 mod range_test;
-mod thread_study;
 mod data_structure;
 mod lock_test;
 mod b01_the_tao_of_programming;
