@@ -1,5 +1,5 @@
 [package]
-name = "b03_book_async_rs"
+name = "b03_t3_chatroom"
 version = "0.1.0"
 authors = ["yangyang <ofyang@qq.com>"]
 edition = "2018"
@@ -8,3 +8,4 @@ workspace = "../../.."
 
 [dependencies]
 async-std = "1.4.0"
+futures = "0.3.1"
