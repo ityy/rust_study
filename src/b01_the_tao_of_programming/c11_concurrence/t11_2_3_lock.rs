@@ -1,7 +1,7 @@
 //! 锁：线程同步的惯用策略
 //! 要解决上一节末尾的问题，我们引入Mutex互斥锁
 
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, RwLock};
 use std::thread;
 use std::thread::current;
 
@@ -63,83 +63,78 @@ fn test_poison() {
 
 
 /// 死锁
+/// 死锁发生的典型条件：
+///     多方竞争，多个资源。
+///     A、B两方竞争X、Y两个资源。A拿到了X，等待获取Y。B拿到了Y，等待获取X。此时A、B发生死锁。
 /// 模拟死锁项目：
 ///     采用8个线程，每个线程模拟掷硬币的场景，规定连续10次掷出正面为一轮。
 ///     要求每个线程模拟一轮，统计每个线程的掷硬币次数，以及8个线程的平均掷硬币次数。
-/// 不会死锁
+/// 不会死锁 示例：
 #[test]
 fn test_not_deadlock() {
-    let total_flips = Arc::new(Mutex::new(0));
-    let completed = Arc::new(Mutex::new(0));
+    // 要求运行线程的个数
     let runs = 8;
+    // 要求连续正面的次数
     let target_flips = 10;
-    for _ in 0..runs {
-        let total_flips = total_flips.clone();
-        let completed = completed.clone();
+    // 共享资源1 全部线程投掷次数累计
+    let total_flips_lock = Arc::new(Mutex::new(0));
+    // 共享资源2 完成的线程个数累计
+    let completed_lock = Arc::new(Mutex::new(0));
+    /// 这两个资源 存在8个线程和主线程共9方竞争，因为每个线程获取锁的顺序一致，本质上是子线程和主线程的竞争有死锁的可能。
+    for id in 0..runs {
+        let total_flips = total_flips_lock.clone();
+        let completed = completed_lock.clone();
         thread::spawn(move || {
-            flip_simulate(target_flips, total_flips);
-            let mut completed = completed.lock().unwrap();
+            println!("thread {} start", id);
+            flip_simulate(target_flips, total_flips); // 先获取total_flips_lock
+            let mut completed = completed.lock().unwrap(); // 后获取completed_lock
             *completed += 1;
+            println!("thread {} end", id);
         });
     }
     loop {
-        let completed = completed.lock().unwrap();
+        let completed = completed_lock.lock().unwrap(); // 先获取completed_lock
         if *completed == runs {
-            let total_flips = total_flips.lock().unwrap();
+            let total_flips = total_flips_lock.lock().unwrap(); // 后获取total_flips_lock
             println!("Final average: {}", *total_flips / *completed);
             break;
         }
     }
 }
 
-fn flip_simulate(target_flips: u64, total_flips: Arc<Mutex<u64>>) {
-    let mut continue_positive = 0;
-    let mut iter_counts = 0;
-    while continue_positive <= target_flips {
-        iter_counts += 1;
-        let pro_or_con = rand::random();
-        if pro_or_con {
-            continue_positive += 1;
-        } else {
-            continue_positive = 0;
-        }
-    }
-    println!("iter_counts: {}", iter_counts);
-    let mut total_flips = total_flips.lock().unwrap();
-    *total_flips += iter_counts;
-}
-
-
-/// 会死锁
+/// 会死锁 示例
 #[test]
 fn test_deadlock() {
     let total_flips = Arc::new(Mutex::new(0));
     let completed = Arc::new(Mutex::new(0));
     let runs = 8;
     let target_flips = 10;
-    for _ in 0..runs {
+    for id in 0..runs {
         let total_flips = total_flips.clone();
         let completed = completed.clone();
         thread::spawn(move || {
-            flip_simulate2(target_flips, total_flips);
+            println!("thread {} start", id);
+            flip_simulate(target_flips, total_flips);
             let mut completed = completed.lock().unwrap();
             *completed += 1;
+            println!("thread {} end", id);
         });
     }
     loop {
         let completed = completed.lock().unwrap();
-        while *completed < runs {}
+        while *completed < runs {} // 此处，主线程获取completed锁后，一直在此循环判断而不释放锁
         let total_flips = total_flips.lock().unwrap();
         println!("Final average: {}", *total_flips / *completed);
     }
 }
 
-fn flip_simulate2(target_flips: u64, total_flips: Arc<Mutex<u64>>) {
-    let mut continue_positive = 0;
-    let mut iter_counts = 0;
+/// 投掷硬币
+fn flip_simulate(target_flips: u64, total_flips: Arc<Mutex<u64>>) {
+    let mut continue_positive = 0; // 连续正面计数
+    let mut iter_counts = 0; // 迭代次数
     while continue_positive <= target_flips {
         iter_counts += 1;
-        let pro_or_con = rand::random();
+        let pro_or_con = rand::random(); // 自动推断为随机bool型
         if pro_or_con {
             continue_positive += 1;
         } else {
@@ -149,4 +144,26 @@ fn flip_simulate2(target_flips: u64, total_flips: Arc<Mutex<u64>>) {
     println!("iter_counts: {}", iter_counts);
     let mut total_flips = total_flips.lock().unwrap();
     *total_flips += iter_counts;
+}
+
+
+/// 读写锁 （Rwlock）
+/// 读写锁是把 Mutex独占锁 进行的读者和写着的拆分。
+/// 该锁支持多读单写，允许没有获取写锁时可以获取多个读锁，没有获取读锁时可以获取一个写锁。
+#[test]
+fn test_rwlock() {
+    let lock = RwLock::new(5);
+    {
+        let r1 = lock.read().unwrap(); //获取读锁
+        let r2 = lock.read().unwrap(); //获取读锁
+        println!("{}", r1);
+        println!("{}", r2);
+        // 作用域结束，释放锁
+    }
+
+    {
+        let mut write = lock.write().unwrap(); // 获取写锁
+        println!("{}", write);
+        // 作用域结束，释放锁
+    }
 }

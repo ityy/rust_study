@@ -1,0 +1,10 @@
+[package]
+name = "t11_2_6_proof_of_work"
+version = "0.1.0"
+authors = ["blackanger <blackanger.z@gmail.com>"]
+edition = "2018"
+workspace = "../../../.."
+
+[dependencies]
+itertools = "0.7.8"
+rust-crypto = "^0.2"
