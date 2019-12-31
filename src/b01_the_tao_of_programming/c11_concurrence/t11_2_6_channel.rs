@@ -20,8 +20,9 @@
 //!     Receiver    接收消息
 //! 两种Channel类型：
 //!     异步无界Channel
-//!         对应channel()函数，返回(Sender,Receiver)元组
+//!         对应channel()函数，返回(Sender,Receiver)元组。
 //!         异步指发送消息不会阻塞，无界指理论上缓冲区无限大。
+//!         (Sender,Receiver)之间由一个FIFO队列独立关联，两者相伴而生。所有Sender死亡，则Receiver的迭代器会迭代结束。
 //!     同步有界Channel
 //!         对应sync_channel()函数，返回(SyncSender,Receiver)元组
 //!         可以指定缓冲区大小，缓冲区满时，发送消息会导致阻塞，直到缓冲区可用。
@@ -100,10 +101,10 @@ fn test_iter() {
         });
     }
 
-    //drop(tx); //迭代之前，手动消亡掉主线程的tx。否则会发送死锁，因为主线程不再发送信息却仍持有tx，导致rx无限迭代。
+    drop(tx); //迭代之前，手动消亡掉主线程的tx。否则会发送死锁，因为其它线程的tx在线程结束时销毁，主线程不再发送信息却仍持有tx，导致rx迭代阻塞。
 
     // 通过迭代的方式获取消息。
-    // 注意，tx和rx是依存的，只要tx还存在，rx就会阻塞一直迭代。tx消亡，rx就不再存在next的信息，从来结束迭代。
+    // 注意，tx和rx是依存的，只要tx还存在，rx就会阻塞一直迭代。tx消亡，rx就不再存在next的信息，从而结束迭代。
     for i in rx.iter() {
         println!("message is {}", i);
     }

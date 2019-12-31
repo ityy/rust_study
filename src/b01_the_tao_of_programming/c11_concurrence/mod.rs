@@ -7,3 +7,5 @@ mod t11_2_4_barrier_condition_variable;
 mod t11_2_5_atomic;
 mod t11_2_6_channel;
 mod t11_2_7_unsafecell;
+mod t11_3_0_async;
+mod t11_3_1_generator;
