@@ -1,0 +1,14 @@
+[package]
+name = "l01_env_logger"
+version = "0.1.0"
+authors = ["yangyang <ofyang@qq.com>"]
+edition = "2018"
+#指明所在工作空间的根路径
+workspace = "../../.."
+
+[dependencies]
+# log API壳子：
+log="0.4.8"
+# log 实现：
+# Implements a logger that can be configured via environment variables.
+env_logger = "0.7.1"
