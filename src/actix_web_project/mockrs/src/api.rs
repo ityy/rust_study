@@ -55,7 +55,7 @@ pub fn do_get(req: HttpRequest, data: web::Data<db::Database>) -> HttpResponse {
     let mut database = data.data.lock().unwrap();
     let mut keys = QueryKeys::from_req(&req);
     match db::Database::get(&mut keys, &mut database) {
-        Ok(obj) => HttpResponse::Ok().json(obj),
+        Ok(obj) => HttpResponse::Ok().content_type("application/json; charset=utf-8").json(obj),
         Err(e) => HttpResponse::build(http::StatusCode::BAD_REQUEST).json(e),
     }
 }
