@@ -1,0 +1,27 @@
+# 基于 actix-web2.0 structopt json 构建的微服务
+# 本项目包含 structopt 命令行参数库使用的详解
+# 本项目可以将一个json文件作为本地数据库存储进行操作，通过http请求访问或修改json中的任意数据。
+[package]
+name = "mockrs"
+version = "0.1.0"
+authors = ["PrivateRookie <996514515@qq.com>"]
+edition = "2018"
+description = "a mock restful json http server"
+workspace = "../../.."
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+#Project Github:https://github.com/PrivateRookie/mockrs
+
+
+[dependencies]
+actix-web = "2.0.0"
+actix-rt = "1.0.0"
+dotenv = "0.15.0"
+jen = "1.0.1"
+#pretty_env_logger = "0.3.1"
+env_logger = "0.7.1"
+log = "0.4.8"
+serde = {version="1.0.104", features=["derive"]}
+serde_json = "1.0.44"
+structopt = "0.3.7"

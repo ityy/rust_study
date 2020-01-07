@@ -94,7 +94,7 @@ fn test_read_file_async() {
     // 到目前为止，只要知道已经生成了一个任务，它将继续在后台运行就足够了。
     let reader_task = task::spawn(future);
     println!("Started task!");//此处和task内的打印 先后顺序不定。
-    thread::sleep(Duration::from_secs(10));//打印了result的文件内容 程序等待10s
+    thread::sleep(Duration::from_secs(5));//打印了result的文件内容 程序等待10s
     // 与threads的join函数非常相似，我们现在可以在handle上调用block_on来阻塞当前线程以等待这个task的完成。
     task::block_on(reader_task);
     println!("Stopped task!");//此处最后打印
