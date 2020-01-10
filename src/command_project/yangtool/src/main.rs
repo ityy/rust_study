@@ -34,8 +34,9 @@ fn main() {
         Config::Jar {
             dev,
             prod,
+            rename,
         } => {
-            let result = jar_exec(dev, prod);
+            let result = jar_exec(dev, prod, rename);
             result_handle(result, "can't found any jar in this path.");
         }
     };
