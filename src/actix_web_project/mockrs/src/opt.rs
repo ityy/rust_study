@@ -6,12 +6,15 @@
 //!     使用枚举，则为SubCommand模式，每个枚举值都是一个子命令。appName为主命令，后方必选SubCommand，可选flag，可选value
 //!     参数序列按定义顺序有序。
 //! 以字段名parameter举例：
-//!     short表示短flag，以-p开头，后跟value
-//!     long表示长flag，以--parameter开头，后跟value
-//!     无short、long则表示为无flag的ARGS模式，按位置直接给value。
+//!     short           表示短flag，以-p开头，后跟value
+//!     long            表示长flag，以--parameter开头，后跟value
+//!     无short、long     表示该命令为ARGS模式，无需给flag，按位置直接给value。
 //!     default_value    给予默认值
 //!     env              从环境变量取值
 //!     ///              字段的文档注释，会在--help中体现为帮助说明。
+//!     Option类型        表示该命令可选
+//!     bool类型          表示该命令为flag模式，无需给value，输入则为true，无输入则为false
+//!
 use crate::StructOpt;
 
 /// 要在 RUST 程序中获得Cargo中的一些值，请执行以下操作:

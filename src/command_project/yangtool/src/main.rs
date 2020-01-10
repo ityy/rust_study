@@ -8,9 +8,11 @@ use std::process::{Command, Output};
 use env_logger::Env;
 use structopt::StructOpt;
 
+use api::*;
 use opt::Config;
 
 mod opt;
+mod api;
 
 fn main() {
     let env = Env::default()
@@ -20,40 +22,36 @@ fn main() {
 
     let config = Config::from_args();
 
-    let result = match config {
+    match config {
         Config::Or {
             reload,
             quit,
             start,
-        } => or_exec(reload, quit, start),
+        } => {
+            let result = or_exec(reload, quit, start);
+            result_handle(result, "can't found openresty in your system.");
+        }
         Config::Jar {
             dev,
             prod,
-        } => jar_exec(dev, prod),
+        } => {
+            let result = jar_exec(dev, prod);
+            result_handle(result, "can't found any jar in this path.");
+        }
     };
+}
 
+fn result_handle(result: Result<Output, Error>, message: &str) {
     match result {
-        Ok(t) => info!("{:?}", t),
-        Err(e) => error!("{:?}", e),
+        Ok(t) => {
+            if !t.stdout.is_empty() {
+                info!("{}", String::from_utf8(t.stdout).unwrap());
+            }
+            if !t.stderr.is_empty() {
+                info!("{}", String::from_utf8(t.stderr).unwrap());
+            }
+        }
+        Err(e) => error!("{}", message),
     }
 }
 
-fn or_exec(reload: bool, quit: bool, start: bool) -> io::Result<Output> {
-    if reload {
-        Command::new("/usr/local/openresty/nginx/sbin/nginx").args(&["-s", "reload"]).output()
-    } else if quit {
-        Command::new("/usr/local/openresty/nginx/sbin/nginx").arg("quit").output()
-    } else {
-        Command::new("/usr/local/openresty/nginx/sbin/nginx").output()
-    }
-}
-
-fn jar_exec(dev: bool, prod: bool) -> io::Result<Output> {
-    if dev {
-        Command::new("/usr/local/openresty/nginx/sbin/nginx").args(&["-s", "reload"]).output()
-    } else if prod {
-        Command::new("/usr/local/openresty/nginx/sbin/nginx").arg("quit").output()
-    } else {
-        Command::new("/usr/local/openresty/nginx/sbin/nginx").output()
-    }
-}
