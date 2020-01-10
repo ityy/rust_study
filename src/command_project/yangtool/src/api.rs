@@ -24,7 +24,9 @@ pub fn jar_exec(dev: bool, prod: bool, rename: Option<String>) -> io::Result<Out
         for path in paths {
             let file_name = path.unwrap().file_name().into_string().unwrap();
             if file_name.ends_with(".jar") {
+                // 获取当前时间
                 let local: DateTime<Local> = Local::now();
+                // 备份原文件，并以时间作为后缀名
                 let back_name = format!("{}.{}", file_name, local.format("%Y-%m-%d_%H:%M:%S").to_string());
                 Command::new("mv").arg(&file_name).arg(&back_name).output().unwrap();
                 Command::new("mv").arg(&new_file_name).arg(&file_name).output().unwrap();
@@ -35,5 +37,5 @@ pub fn jar_exec(dev: bool, prod: bool, rename: Option<String>) -> io::Result<Out
         }
     };
 
-    Command::new("/bin/bash").arg("hello.sh").output()
+    Command::new("echo").arg(" ").output()
 }

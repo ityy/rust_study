@@ -7,7 +7,7 @@ use crate::StructOpt;
 #[structopt(
 name = env ! ("CARGO_PKG_NAME"),
 version = env ! ("CARGO_PKG_VERSION"),
-author = "mingyang,yangyang <ofyang@qq.com>",
+author = "yangyang <ofyang@qq.com>",
 about = "This is a command line project for quick execution of Linux commands"
 )]
 pub enum Config {
