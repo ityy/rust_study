@@ -14,6 +14,9 @@ use std::error::Error;
 use std::fs::File;
 use std::io::Read;
 use std::num::ParseIntError;
+use std::process::Command;
+
+const FILE_PATH: &'static str = "src/b01_the_tao_of_programming/c09_panic_handle/test_sum.txt";
 
 /// 演示收到Ok或Err的情况
 #[test]
@@ -79,8 +82,7 @@ fn test_combinator() {
 /// 如何让下方函数可以把不同的错误，传播出来呢？
 #[test]
 fn test_read_error_count() {
-    let filename = "..\\..\\src\\b02_the_tao_of_programming\\c09_panic_handle\\test_sum.txt";
-    let mut file = File::open(filename).unwrap(); // 读不出文件报错
+    let mut file = File::open(FILE_PATH).unwrap(); // 读不出文件报错
     let mut centents = String::new();
     file.read_to_string(&mut centents).unwrap(); // 内容无法解析报错
     let mut sum = 0;
@@ -94,7 +96,8 @@ fn test_read_error_count() {
 ///     1 自定义统一的错误类型，使得其它错误都可以对应到统一错误类型中的某一个错误。IO操作的Error即是如此。
 ///     2 使用特性对象，Rust提供了Error trait，Rust中的所有错误都实现了这一特性。
 /// 由于特性对象动态分发的特性，其性能是不如自定义统一错误类型的，但其方便程度要强于自定义统一错误类型。
-/// 我们使用Error trait，重构test_read_error_count()函数，使用组合子书写业务逻辑：
+///
+/// 这里我们使用Error trait，重构test_read_error_count()函数，使用组合子书写业务逻辑：
 fn test_read_error_trait(filename: &str) -> Result<i32, Box<dyn Error>> {
     let result = File::open(filename)
         .map_err(
@@ -135,7 +138,7 @@ fn test_read_error_trait(filename: &str) -> Result<i32, Box<dyn Error>> {
 /// try! 与 操作符?
 /// 简化错误处理，直接提取正确结果，如果是错误则向外传播出去。
 /// try!宏内部对Err调用了from转换，不论是特性对象还是自定义统一错误，都不需要手动调用map_err(|e| e.into())处理错误类型的转换问题了。
-/// 重构test_read_error_trait()
+/// 重构上方的test_read_error_trait()方法，其功能一样，写法更简洁
 fn test_read_error_try(filename: &str) -> Result<i32, Box<dyn Error>> {
     // 使用try!宏，直接获取结果。
     // let mut file = try!(File::open(filename).map_err(|e| e.into()));
@@ -153,8 +156,8 @@ fn test_read_error_try(filename: &str) -> Result<i32, Box<dyn Error>> {
 /// 测试结果
 #[test]
 fn test() {
-    // let result = test_read_error_trait("D:\\yang_rust\\rust_study\\src\\b02_the_tao_of_programming\\c09_panic_handle\\test_sum.txt");
-    let result = test_read_error_try("D:\\yang_rust\\rust_study\\src\\b02_the_tao_of_programming\\c09_panic_handle\\test_sum.txt");
+    let result = test_read_error_trait(FILE_PATH);
+//    let result = test_read_error_try(FILEPATH);
     match result {
         Ok(n) => println!("sum is {}", n),
         Err(e) => println!("error info:{},cause:{:?}", e.description(), e.source()),
