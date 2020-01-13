@@ -74,21 +74,14 @@ fn test_combinator() {
 }
 
 /// 处理不同类型的错误
-/// test_read_error_count()函数展示了一个函数内部多种不同错误的情形。从文件读取每行的数字，返回它们的和。
-/// 对于Result<T,E>来说，最终只能返回一个Err类型，如果在函数中返回了不同的错误类型，编译就会报错。
-/// 如何让test_read_error_count()可以返回Result呢？
+/// 下方函数展示了一个函数内部多种不同错误的情形。从文件读取每行的数字，返回它们的和。
+/// 对于Result<T,E>来说，最终只能返回一个E类型，如果在函数中返回了不同的错误类型，编译就会报错。
+/// 如何让下方函数可以把不同的错误，传播出来呢？
 #[test]
 fn test_read_error_count() {
-    // 读取命令行参数
-    // let args = std::env::args().collect::<Vec<String>>();
-    // args[0]为命令自身。args[1]为第一个参数，即文件名。
-    // let filename = &args[1];
-
-    // 由于IDE直接运行的缘故，不便获取命令行参数，所以直接给定文件名。
-    let filename = "D:\\yang_rust\\rust_study\\src\\b02_the_tao_of_programming\\c09_panic_handle\\test_sum.txt";
+    let filename = "..\\..\\src\\b02_the_tao_of_programming\\c09_panic_handle\\test_sum.txt";
     let mut file = File::open(filename).unwrap(); // 读不出文件报错
     let mut centents = String::new();
-    //read_to_string() 需要文件内容为utf8编码，会返回读取到的字节数
     file.read_to_string(&mut centents).unwrap(); // 内容无法解析报错
     let mut sum = 0;
     for c in centents.lines() {
@@ -101,18 +94,17 @@ fn test_read_error_count() {
 ///     1 自定义统一的错误类型，使得其它错误都可以对应到统一错误类型中的某一个错误。IO操作的Error即是如此。
 ///     2 使用特性对象，Rust提供了Error trait，Rust中的所有错误都实现了这一特性。
 /// 由于特性对象动态分发的特性，其性能是不如自定义统一错误类型的，但其方便程度要强于自定义统一错误类型。
-/// 我们使用第2个办法，重构test_read_error_count()函数,并使用组合子书写业务逻辑：
+/// 我们使用Error trait，重构test_read_error_count()函数，使用组合子书写业务逻辑：
 fn test_read_error_trait(filename: &str) -> Result<i32, Box<dyn Error>> {
     let result = File::open(filename)
         .map_err(
             // map_err和map 操作相同，目标相反：map只处理Ok的值，Err原样返回。map_err只处理Err的值，Ok原样返回。
-            |e| e.into(), // 通过into()方法，将Err转为Box<dyn Error>类型。
+            |e| e.into(), // into()自动将Err转为Box<dyn Error>类型，从此处开始调用链上传递的错误均为Box<dyn Error>
         )
         .and_then(|mut file| {
             let mut centents = String::new();
-            //read_to_string() 需要文件内容为utf8编码，会返回读取到的字节数
             file.read_to_string(&mut centents)
-                .map_err(|e| e.into()) // 通过into()方法，将Err转为Box<dyn Error>类型。
+                .map_err(|e| e.into()) // into()自动将Err转为Box<dyn Error>
                 .map(|_| centents) // 正确时返回centents 将处理交给下一个调用链。也可直接在这里处理，但代码结构不够优美。
         })
         .and_then(|centents| {
@@ -140,14 +132,14 @@ fn test_read_error_trait(filename: &str) -> Result<i32, Box<dyn Error>> {
     result
 }
 
-/// try!宏 简化错误处理
-/// 直接提取正确结果，如果是错误则向外传播出去。
+/// try! 与 操作符?
+/// 简化错误处理，直接提取正确结果，如果是错误则向外传播出去。
 /// try!宏内部对Err调用了from转换，不论是特性对象还是自定义统一错误，都不需要手动调用map_err(|e| e.into())处理错误类型的转换问题了。
 /// 重构test_read_error_trait()
 fn test_read_error_try(filename: &str) -> Result<i32, Box<dyn Error>> {
     // 使用try!宏，直接获取结果。
-    // let file = try!(File::open(filename).map_err(|e| e.into()));
-    // 操作符'?'是try!宏的语法糖，使代码更加优雅。
+    // let mut file = try!(File::open(filename).map_err(|e| e.into()));
+    // 操作符? 是try!宏的语法糖，使代码更加优雅。
     let mut file: File = File::open(filename)?;
     let mut centents = String::new();
     file.read_to_string(&mut centents)?;
