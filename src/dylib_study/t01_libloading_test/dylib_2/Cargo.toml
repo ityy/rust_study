@@ -1,0 +1,13 @@
+[package]
+name = "dylib_2"
+version = "0.1.0"
+authors = ["yangyang <ofyang@qq.com>"]
+edition = "2018"
+description = "a mock restful json http server"
+workspace = "../../../.."
+
+[dependencies]
+reqwest = "0.9.19"
+
+[lib]
+crate-type = ["dylib"]

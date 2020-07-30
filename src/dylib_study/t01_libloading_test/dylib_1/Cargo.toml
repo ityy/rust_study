@@ -1,0 +1,14 @@
+[package]
+name = "dylib_1"
+version = "0.1.0"
+authors = ["yangyang <ofyang@qq.com>"]
+edition = "2018"
+description = "a mock restful json http server"
+workspace = "../../../.."
+
+[dependencies]
+
+[lib]
+#name="testdll" 可选，默认为package名
+#声明为动态库（Rust格式）
+crate-type = ["dylib"]

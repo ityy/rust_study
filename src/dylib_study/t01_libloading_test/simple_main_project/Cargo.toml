@@ -1,0 +1,10 @@
+[package]
+name = "simple_main_project"
+version = "0.1.0"
+authors = ["yangyang <ofyang@qq.com>"]
+edition = "2018"
+description = "a mock restful json http server"
+workspace = "../../../.."
+
+[dependencies]
+libloading = "0.6.2"

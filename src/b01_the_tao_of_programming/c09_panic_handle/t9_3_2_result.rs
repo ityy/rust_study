@@ -123,7 +123,7 @@ fn test_read_error_trait(filename: &str) -> Result<i32, Box<dyn Error>> {
                         // 手动转换为Box<dyn Error>
                         let e: Box<dyn Error> = e.into();
                         // 打印dyn Error的信息
-                        println!("error info:{},cause:{:?}", e.description(), e.source());
+                        println!("error info:{},cause:{:?}", e.to_string(), e.source());
                         // 也可以直接中断，将e返回出去
                         // return Err(e);
                     }

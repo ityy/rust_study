@@ -10,20 +10,24 @@ edition = "2018"
 #整个工作空间只有一个Cargo.lock，在工作空间的根目录
 #整个工作空间只有一个target，在工作空间的根目录
 [workspace]
-members=[
-"src/b03_web_server/study_iron",
-"src/b02_async_study/b03_book_async_rs",
-"src/b02_async_study/b03_t3_chatroom",
-"src/b02_async_study/futures_study_v016",
-"src/b02_async_study/b02_async_book",
-"src/http_client/study_http_req",
-"src/http_client/study_reqwest",
-"src/b01_the_tao_of_programming/c10_module/t10_3_0_csv_challenge",
-"src/b01_the_tao_of_programming/c11_concurrence/t11_2_6_proof_of_work",
-"src/b01_the_tao_of_programming/c11_concurrence/t11_2_8_thread_pool",
-"src/log_lib/l01_env_logger",
-"src/actix_web_project/mockrs",
-"src/command_project/yangtool",
+members = [
+    "src/b03_web_server/study_iron",
+    "src/b02_async_study/b03_book_async_rs",
+    "src/b02_async_study/b03_t3_chatroom",
+    "src/b02_async_study/futures_study_v016",
+    "src/b02_async_study/b02_async_book",
+    "src/http_client/study_http_req",
+    "src/http_client/study_reqwest",
+    "src/b01_the_tao_of_programming/c10_module/t10_3_0_csv_challenge",
+    "src/b01_the_tao_of_programming/c11_concurrence/t11_2_6_proof_of_work",
+    "src/b01_the_tao_of_programming/c11_concurrence/t11_2_8_thread_pool",
+    "src/log_lib/l01_env_logger",
+    "src/actix_web_project/mockrs",
+    "src/command_project/yangtool",
+    "src/dylib_study/t01_libloading_test/simple_main_project",
+    "src/dylib_study/t01_libloading_test/dylib_1",
+    "src/dylib_study/t01_libloading_test/dylib_2",
+    "src/dylib_study/t02_plugin_manage",
 ]
 
 [dependencies]
@@ -39,4 +43,4 @@ failure_derive = "0.1.6"
 serde_json = "1.0.40"
 serde = "1.0.99"
 
-rand="0.7.2"
+rand = "0.7.2"
