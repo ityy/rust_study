@@ -23,12 +23,30 @@ mod b04_memory_and_pointer;
 mod range_test;
 mod data_structure;
 mod lock_test;
-mod b01_the_tao_of_programming;
 
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    hashmapT::main();
+    println!("hello");
+
+    // hashmapT::main();
+    // let result = err_u32().unwrap();//thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: 2', src\main.rs:32:18
+    // println!("result:{}", result);
+    // let result = err_string().unwrap();//thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: "error message"', src\main.rs:34:18
+    // println!("result:{}", result);
 }
+
+fn err_u32() -> Result<u32, u32> {
+    // Ok(1)
+    Err(2)
+}
+
+
+fn err_string() -> Result<u32, String> {
+    // Ok(1)
+    Err("error message".into())
+}
+
+
 
 

@@ -126,10 +126,10 @@ fn memory_heap() {
     println!("x_ptr 指针值: {:p}", x_ptr);//打印指针
     println!("x_ptr 解引用值: {}", *x_ptr);//*加不加都可以, println!可以自动解引用来打印值. 只有用{:p}才会打印地址.
     let x_mut_ptr = &mut x; //此处获取了x的可变借用，则之后不能再使用x_ptr（x的不可变借用），否则报错。
-    println!("x_mut_ptr 指针值: {:p}", x_mut_ptr);
+    println!("x_mut_ptr 指针值: {:p}", x_mut_ptr);// 与x_ptr相同
     println!("x_mut_ptr 解引用值: {}", *x_mut_ptr);
     let x_raw_ptr = x_mut_ptr as *const String;//将引用转换为原生指针。 *const表示原生不可变地址， *mut表示原生可变地址。
-    println!("x_raw_ptr 指针值: {:p}", x_raw_ptr);
+    println!("x_raw_ptr 指针值: {:p}", x_raw_ptr);// 与x_ptr相同
     unsafe {
         //原生指针必须在unsafe块内使用。
         println!("x_raw_ptr 解引用值: {}", *x_raw_ptr);
@@ -250,21 +250,9 @@ fn testBox2() {
     print_addr_and_value(z_addr_int, 24);
 }
 
-///将T类型的Rust引用型（安全指针类型，即安全内存地址类型）转为整数类型
-pub fn convert_addr_to_int<T>(t: &T) -> usize {
-    //rust引用和raw指针 raw指针和usize 可以互相转换, 这就为内存操作提供了无限可能
-    //*const表示原生不可变指针， *mut表示原生可变指针。
-    t as *const T as usize
-}
 
-///将整数类型转为T类型的Rust引用型（安全指针类型，即安全内存地址类型）
-pub unsafe fn convert_int_to_addr<'a, T>(addr: usize) -> &'a T {
-    let raw_ptr = addr as *const T;//1 将整数型地址转为T型原生指针
-    &*raw_ptr//2 原生指针转为Rust引用的方法：解指针得到对象，再引用
-}
-
-
-///打印内存地址
+/// ## 打印内存
+/// 入参（起始地址，字节数）
 pub fn print_addr_and_value(addr_begin: usize, byte_count: usize) {
     //需要访问原生指针，则必须在unsafe块中使用
     unsafe {
@@ -275,3 +263,18 @@ pub fn print_addr_and_value(addr_begin: usize, byte_count: usize) {
     }
 }
 
+/// ## 内存地址格式转换
+/// 将T类型的Rust引用型（安全指针类型，即安全内存地址类型）转为整数类型
+pub fn convert_addr_to_int<T>(t: &T) -> usize {
+    //rust引用和raw指针 raw指针和usize 可以互相转换, 这就为内存操作提供了无限可能
+    //*const表示原生不可变指针， *mut表示原生可变指针。
+    t as *const T as usize
+}
+
+
+/// ## 内存地址格式逆转换
+/// 将整数类型转为T类型的Rust引用型（安全指针类型，即安全内存地址类型）
+pub unsafe fn convert_int_to_addr<'a, T>(addr: usize) -> &'a T {
+    let raw_ptr = addr as *const T;//1 将整数型地址转为T型原生指针
+    &*raw_ptr//2 原生指针转为Rust引用的方法：解指针得到对象，再引用
+}
