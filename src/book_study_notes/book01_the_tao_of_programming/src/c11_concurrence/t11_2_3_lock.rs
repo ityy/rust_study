@@ -3,7 +3,6 @@
 
 use std::sync::{Arc, Mutex, RwLock};
 use std::thread;
-use std::thread::current;
 
 ///使用Arc与Mutex 跨多个线程测试：
 #[test]

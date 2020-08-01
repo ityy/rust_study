@@ -1,11 +1,11 @@
 //! # 流程控制
 //! 一般编程语言都有流程控制语句：条件语句和循环语句。Rust也不例外，但Rust叫：条件表达式，循环表达式。表达式可以返回值。
 
-/// if 表达式
+/// ## if 表达式
 #[test]
 fn test_if() {
     let n = 13;
-    let big_n = if (n < 10 && n > -10) {
+    let big_n = if n < 10 && n > -10 {
         10 * n
     } else {
         n / 2
@@ -13,7 +13,7 @@ fn test_if() {
     assert_eq!(6, big_n);
 }
 
-/// for 循环表达式
+/// ## for 循环表达式
 #[test]
 fn test_for() {
     //
@@ -28,7 +28,7 @@ fn test_for() {
     }
 }
 
-/// while 循环表达式
+/// ## while 循环表达式
 #[test]
 fn test_while() {
     let mut i = 100;
@@ -38,9 +38,8 @@ fn test_while() {
     }
 }
 
-/// loop 表达式
-/// 是循环表达式的子集：无限循环
-/// 比while（true）好的一点是，编译器看到loop就知道是无限循环，可以做一些优化。
+/// ## loop 表达式
+/// 无限循环，是循环表达式的子集。比while（true）好的一点是，编译器看到loop就知道是无限循环，可以做一些优化。
 #[test]
 fn test_loop() {
     let mut i = 100;

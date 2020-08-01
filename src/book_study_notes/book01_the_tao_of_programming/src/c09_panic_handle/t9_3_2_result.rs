@@ -14,7 +14,6 @@ use std::error::Error;
 use std::fs::File;
 use std::io::Read;
 use std::num::ParseIntError;
-use std::process::Command;
 
 const FILE_PATH: &'static str = "src/book_study_notes.b01_the_tao_of_programming/c09_panic_handle/test_sum.txt";
 

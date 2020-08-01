@@ -1,4 +1,7 @@
-//! 泛型返回值自动推导
+//! # 泛型返回值自动推导
+//! 声明两个结构体Foo、Bar 和一个特性X，使Foo、Bar实现X。<br/>
+//! 声明一个测试函数foobar，返回值是X类型。<br/>
+//! 则调用此函数时，可以根据绑定变量的实际类型推断出返回值的实际类型。
 
 //声明一个元组结构体
 #[derive(Debug, PartialEq)]
@@ -9,26 +12,25 @@ struct Foo(i32);
 struct Bar(i32, i32);
 
 //声明一个特性
-trait Inst {
+trait X {
     fn new(i: i32) -> Self;
 }
 
-
 //为结构体实现特性
-impl Inst for Foo {
+impl X for Foo {
     fn new(i: i32) -> Self {
         Foo(i)
     }
 }
 
-impl Inst for Bar {
+impl X for Bar {
     fn new(i: i32) -> Self {
         Bar(i, i * 2)
     }
 }
 
 //声明一个函数, 并限定返回值的泛型类型 必须实现Inst特性
-fn foobar<T: Inst>(i: i32) -> T {
+fn foobar<T: X>(i: i32) -> T {
     T::new(i)
 }
 
