@@ -40,14 +40,14 @@ fn test_basic() {
 #[test]
 fn test_principle() {
     // 闭包的类型均不相同,即使如此定义，c1和c2仍为不同的类型。
-    let c1 = || {};
-    let c2 = || {};
+    let _c1 = || {};
+    let _c2 = || {};
 
     let env_var = 1;
     // 其实Fn FnOnce FnMut都是特性，其原生写法如下所示：
     // let c1: Box<Fn<(), Output=i32>> = Box::new(|| env_var + 2);
     // 编译器为这三个特性专门做了一种强制性的简便写法：
-    let c1: Box<dyn Fn() -> i32> = Box::new(|| env_var + 2);
+    let _c3: Box<dyn Fn() -> i32> = Box::new(|| env_var + 2);
 }
 
 
