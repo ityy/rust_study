@@ -33,7 +33,7 @@ fn static_dispatch<T>(t: &T) where T: Bar {
 /// 1. 受Self:Sized约束
 /// 2. 第一个参数为self
 /// 3. 没有泛型 (否则特性对象不知道调哪个方法)
-fn dynamic_dispatch(t: &dyn Bar) -> Box<dyn Bar> {
+fn dynamic_dispatch(t: &dyn Bar) -> Box<&dyn Bar> {
     t.nothing();
     Box::new(t)
 }
