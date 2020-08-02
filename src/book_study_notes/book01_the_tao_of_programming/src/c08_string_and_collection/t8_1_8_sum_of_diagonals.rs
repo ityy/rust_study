@@ -1,4 +1,4 @@
-//! 字符串测验-对角线之和
+//! # 字符串测验-对角线之和
 
 #[test]
 fn test() {
@@ -7,7 +7,9 @@ fn test() {
                     5678
                     9876
                     4321";
+
     let (mut x, mut y) = (0, 0);
+    // enumerate 创建一个迭代器，返回(key,value)，其中key由下标或序号生成，value为对应元素。
     for (idx, val) in s.lines().enumerate() {
         let val = val.trim();
         let left = val[idx..idx + 1].parse::<u32>().unwrap();
