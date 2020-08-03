@@ -119,3 +119,5 @@ fn test_custom_format() {
 
     log::info!("a log from `MyLogger`");
 }
+
+fn main() {}

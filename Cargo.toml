@@ -22,7 +22,7 @@ members = [
 #    "src/book_study_notes/book01_the_tao_of_programming/src/c10_module/t10_3_0_csv_challenge",
 #    "src/book_study_notes/book01_the_tao_of_programming/src/c11_concurrence/t11_2_6_proof_of_work",
 #    "src/book_study_notes/book01_the_tao_of_programming/src/c11_concurrence/t11_2_8_thread_pool",
-    "src/log_lib/l01_env_logger",
+    "src/logging_framework_test/t01_env_logger",
     "src/actix_web_project/mockrs",
     "src/command_project/yangtool",
     "src/dylib_study/t01_libloading_test/simple_main_project",

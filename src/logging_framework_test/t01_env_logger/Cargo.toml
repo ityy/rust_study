@@ -1,5 +1,5 @@
 [package]
-name = "l01_env_logger"
+name = "t01_env_logger"
 version = "0.1.0"
 authors = ["yangyang <ofyang@qq.com>"]
 edition = "2018"
