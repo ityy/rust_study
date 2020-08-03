@@ -20,7 +20,7 @@ mod stringT;
 mod patternT;
 mod into_from;
 mod lazy_static_test;
-mod memory_and_pointer;
+mod memory_and_pointer_test;
 mod range_test;
 mod data_structure;
 mod lock_test;
