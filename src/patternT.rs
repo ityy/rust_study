@@ -1,4 +1,4 @@
-//! pattern 模式
+//! # pattern 模式
 
 ///测试
 pub fn main() {

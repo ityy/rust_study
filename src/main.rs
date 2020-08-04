@@ -11,7 +11,7 @@ use std::rc::Rc;
 
 ///以文件夹为mod的, 文件夹内必须有一个mod.rs存放模块源码
 mod sliceT;
-mod optionT;
+mod option_test;
 mod collections;
 mod hashmapT;
 mod intoT;
@@ -29,7 +29,7 @@ mod result_test;
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    memory_and_pointer_test::t04_free_or_overflow::overflow_test();
+    memory_and_pointer_test::t04_memory_free_and_memory_overflow::overflow_test();
 }
 
 

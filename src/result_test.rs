@@ -1,4 +1,4 @@
-//! # Result<T, E> 解析
+//! # Result<T, E> 枚举 解析
 //! Result<T, E> 是Rust内置的一个枚举，含有Ok(T)、Err(E) 两个元素。
 //! ```
 //! pub enum Result<T, E> {

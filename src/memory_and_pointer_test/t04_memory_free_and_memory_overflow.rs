@@ -49,6 +49,37 @@ fn drop_and_get_addr_num(s: String) -> usize {
     text_addr_num
 }//此处drop了s
 
+
+/// # drop() 函数测试
+/// drop函数就是一个空函数，所有权转移给drop之后自然被作用域回收。
+/// ```
+/// pub fn drop<T>(_x: T) {}
+/// ```
+#[test]
+fn drop_function_test() {
+    struct DropTarget {
+        data: String,
+    }
+    impl Drop for DropTarget {
+        fn drop(&mut self) {
+            println!("dropping! data:{}", self.data)
+        }
+    }
+    let drop_target = DropTarget {
+        data: String::from("i'm string"),
+    };
+    drop(drop_target);//被作用域结束回收，回收时触发drop方法打印信息。
+    println!("drop_target is dropped");
+    // println!("{}", &drop_target.data); // error: 使用已被move的值
+    println!("main close");
+    /*打印结果：
+        dropping! data:i'm string
+        drop_target is dropped
+        main close
+     */
+}
+
+
 /// # 内存溢出 测试
 /// 使用一个简单的loop循环不断申请内存，且使用一个外部容器保存申请的内容。 <br/>
 /// 最好编译为exe后再执行，在任务管理器中观察内存占用 <br/>
