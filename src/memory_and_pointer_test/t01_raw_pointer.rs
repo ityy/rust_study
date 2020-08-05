@@ -70,6 +70,47 @@
 
 use crate::memory_and_pointer_test::memory_operation::MemoryOperation;
 
+/// # 名字、标识符、变量
+/// 虽然术语“名字”和“变量”通常指的是同一个事物,我们还是要很小心地使用它们,以便区别编译时刻的名字和名字在运行时刻所指的内存位置。  <br/>
+///
+/// 标识符(identifier)是一个字符串,通常由字母和数字组成。它用来指向(标记)一个实体,比如一个数据对象、过程、类,或者类型。 <br/>
+/// 所有的标识符都是名字,但并不是所有的名字都是标识符。 <br/>
+/// 名字也可以是一个表达式。比如名字x.y可以表示x所指的一个结构中的字段y.这里,c和y是标识符,而x.y是一个名字。 <br/>
+/// 像x.y这样的复合名字称为受限名字(qualifiecname) <br/>
+///
+/// 变量指向存储中的某个特定的位置。 <br/>
+/// 同一个标识符被多次声明是很常见的事情,每一个这样的声明引入一个新的变量。 <br/>
+/// 即使每个标识符只被声明一次,一个递归过程中的局部标证符将在不同的时刻指向不同的存储位置。 <br/>
+#[test]
+fn name_and_identifier() {
+    // 栈上一块内存存放String智能指针，let让标识符x绑定到这块内存上。
+    let mut string_owner = String::from("hello");
+    println!("old String 在堆中的地址：{:p}", string_owner.as_ptr());// 0x2593b8586d0
+    let old_string_ref = &mut string_owner;
+    println!("old String 指针地址：{:p}", old_string_ref);// 0x80508ff2b0
+
+    // 重新绑定 和 赋值 有着本质区别。
+    // 栈上一块新的内存存放String智能指针，let让标识符x绑定到这块新的内存上。
+    let string_owner = String::from("world");
+    let new_string_ref = &string_owner;
+    println!("new String 指针地址：{:p}", new_string_ref);// 0x80508ff368
+
+    // 无效的找回所有权方法
+    // let old_string_owner = *old_string_ref;// cannot move out
+
+    // 找回所有权
+    let old_string_owner = std::mem::replace(old_string_ref, String::new());
+    println!("old String 在堆中的地址：{:p}", old_string_owner.as_ptr());// 0x2593b8586d0 堆中地址一致，资源被找回
+    println!("old String 指针地址：{:p}", &old_string_owner);// 0x80508ff3d0
+
+
+    println!("旧字符串所有者： 不存在可用的所有者");
+    println!("旧字符串引用：{}", old_string_ref);// 空
+    println!("新字符串所有者：{}", string_owner);// world
+    println!("新字符串引用：{}", new_string_ref);// world
+}
+
+
 /// # rust引用与原生指针
 /// 引用是Rust中的安全指针，原生指针是Rust中的不安全指针
 /// 原生指针需在unsafe块内使用，具有极大破坏性，突破了所有权限制，突破了可变性限制。
