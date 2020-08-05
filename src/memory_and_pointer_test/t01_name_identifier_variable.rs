@@ -24,19 +24,19 @@ fn who_create_stack_address() {
     let mut name = String::from("hello");
     println!("name addr:{:p}", &name);// 0x238f9ff0d0
     println!("name value:");
-    MemoryOperation::print_addr_and_value(MemoryOperation::convert_addr_to_int(&name), 16);
+    MemoryOperation::print_addr_and_value(MemoryOperation::convert_addr_to_int(&name), 24);//8byte指针 8byte长度 8byte容量
 
     // 为name重新赋值，栈内存name的地址固定，值发生了变化。值为指向"world"的String指针。
     name = String::from("world");
     println!("name addr:{:p}", &name);// 0x238f9ff0d0
     println!("name value:");
-    MemoryOperation::print_addr_and_value(MemoryOperation::convert_addr_to_int(&name), 16);
+    MemoryOperation::print_addr_and_value(MemoryOperation::convert_addr_to_int(&name), 24);
 
     // let 创建了一个名为name的栈内存（旧的栈内存name被隐藏 shadowing）
     let mut name = String::from("rust!");
     println!("name addr:{:p}", &name);// 0xdf148ff378
     println!("name value:");
-    MemoryOperation::print_addr_and_value(MemoryOperation::convert_addr_to_int(&name), 16);
+    MemoryOperation::print_addr_and_value(MemoryOperation::convert_addr_to_int(&name), 24);
 }
 
 
