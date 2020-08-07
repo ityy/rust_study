@@ -9,4 +9,6 @@ pub mod t07_temporary_memory_address;
 pub mod t04_memory_free_and_memory_overflow;
 pub mod t05_dangling_pointer;
 pub mod t06_memory_leak;
+pub mod pass_by_value_or_pass_by_ref;
+pub mod concurrent_write_memory;
 
