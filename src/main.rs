@@ -29,7 +29,7 @@ mod result_test;
 
 ///主方法, 运行其它学习单元的主方法
 fn main() {
-    memory_and_pointer_test::t04_memory_free_and_memory_overflow::overflow_test();
+    memory_and_pointer_test::concurrent_write_memory::test();
 }
 
 
