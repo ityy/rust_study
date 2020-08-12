@@ -92,7 +92,7 @@ fn test_builder() {
 ///
 /// ## Serde
 /// 访问者模式的一个经典案例就是第三方库Serde，这是一个高效的序列化/反序列化框架，名字也是由Serialize和Deserialize的前几个字母拼接而成。<br/>
-/// Serde仅定义了统一的数据模型，并通过访问者模式开放了序列化和反序列化的接口。Serde目前已经支持了很多种数据格式，包括JSON、XML、YAML、TOML等。
+/// Serde 仅定义了统一的数据模型，并通过访问者模式开放了序列化和反序列化的接口。Serde 目前已经支持了很多种数据格式，包括JSON、XML、YAML、TOML等。
 fn nothing() {}
 
 /// # RAII模式 （Resource Acquisition Is Initialization）
@@ -163,6 +163,7 @@ fn test_raii_1() {
 /// -   Letter有可能被复制多份并被装到多个信封中，不安全
 /// -   Envelope里可能有信，也可能无信，不安全
 /// -   无法保证一定把信交给邮车
+///
 /// 为了解决这些问题，可以使用RAII模式来重构test_raii_1()的逻辑。
 #[test]
 fn test_raii_2() {

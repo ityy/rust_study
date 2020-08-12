@@ -7,7 +7,7 @@
 /// # 字符串迭代器演示
 #[test]
 fn test_string() {
-    // 字符迭代器演示
+    // 单字符迭代
     let s = "borös";
     let mut chars = s.chars();
     assert_eq!(Some('b'), chars.next());
@@ -16,7 +16,7 @@ fn test_string() {
     assert_eq!(Some('ö'), chars.next());
     assert_eq!(Some('s'), chars.next());
 
-    // 字节迭代器演示
+    // 单字节迭代
     let mut bytes = s.bytes();
     assert_eq!(6, s.len()); // 注意，len()返回的是字节长度，不是字符长度
     assert_eq!(Some(98), bytes.next());
