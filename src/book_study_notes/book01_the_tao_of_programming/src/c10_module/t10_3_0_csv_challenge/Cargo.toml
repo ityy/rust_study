@@ -3,9 +3,9 @@ name = "t10_3_0_csv_challenge"
 version = "0.1.0"
 authors = ["yangyang <ofyang@qq.com>"]
 edition = "2018"
-#指明所在工作空间的根路径
-workspace = "../../../.."
+workspace = "../../../../../.."
 
 [dependencies]
-structopt = "0.3.6"
-structopt-derive = "0.3.6"
+# 依赖库：Parse command line argument by defining a struct.
+structopt = "0.3.16"
+structopt-derive = "0.4.9"

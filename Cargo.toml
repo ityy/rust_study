@@ -19,7 +19,7 @@ members = [
     "src/b02_async_study/b02_async_book",
     "src/http_client/study_http_req",
     "src/http_client/study_reqwest",
-#    "src/book_study_notes/book01_the_tao_of_programming/src/c10_module/t10_3_0_csv_challenge",
+    "src/book_study_notes/book01_the_tao_of_programming/src/c10_module/t10_3_0_csv_challenge",
 #    "src/book_study_notes/book01_the_tao_of_programming/src/c11_concurrence/t11_2_6_proof_of_work",
 #    "src/book_study_notes/book01_the_tao_of_programming/src/c11_concurrence/t11_2_8_thread_pool",
     "src/logging_framework_test/t01_env_logger",

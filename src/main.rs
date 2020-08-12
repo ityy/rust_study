@@ -11,7 +11,6 @@ use std::rc::Rc;
 
 ///以文件夹为mod的, 文件夹内必须有一个mod.rs存放模块源码
 mod sliceT;
-mod option_test;
 mod collections;
 mod hashmapT;
 mod intoT;
@@ -24,7 +23,6 @@ mod memory_and_pointer_test;
 mod range_test;
 mod data_structure;
 mod lock_test;
-mod result_test;
 
 
 ///主方法, 运行其它学习单元的主方法
