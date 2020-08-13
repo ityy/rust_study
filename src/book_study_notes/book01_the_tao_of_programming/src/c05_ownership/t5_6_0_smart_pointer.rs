@@ -27,7 +27,7 @@ fn test_box() {
 fn test_rc() {
     ///移动目标到函数，且不返回，使其销毁
     fn drop_rc(t: Rc<i32>) {
-        t;
+
     }
 
     let x = Rc::new(45);

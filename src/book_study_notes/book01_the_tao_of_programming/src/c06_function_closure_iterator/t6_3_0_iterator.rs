@@ -83,7 +83,7 @@ fn impl_iterator() {
         }
     }
 
-    let mut counter = Counter { count: 1 };
+    let counter = Counter { count: 1 };
     for i in counter.into_iter() {
         println!("{}", i);
     }

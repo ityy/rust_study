@@ -37,7 +37,7 @@ impl Rectangle {
     /// 挂在结构体命名空间下且第一个参数为self的fn，称为结构体的关联函数（也称为方法）。<br/>
     /// 调用时使用 结构体实例.方法名()； .的一大作用是: 自动传递实例自身到方法。<br/>
     /// 也可使用 命名空间::函数名(对象实例) 用手动传递实例的方式调用方法。
-    fn getWidth(&self) -> u32 {
+    fn get_width(&self) -> u32 {
         self.width
     }
 }
@@ -57,9 +57,9 @@ impl Display for Rectangle {
 /// 特点:字段没有名称 只有类型
 struct Color(i32, i32, i32);
 
-#[test]
 /// ## 测试元组结构体
-fn testColor() {
+#[test]
+fn test_color() {
     let color = Color(111, 222, 333);
     assert_eq!(color.0, 111);
     assert_eq!(color.1, 222);
@@ -79,7 +79,7 @@ type Int = i32;
 /// ## 测试Integer与Int区别
 /// Integer还是按结构体的用法来使用，而Int可以直接使用。
 #[test]
-fn test_Integer_and_Int() {
+fn test_integer_and_int() {
     let int = Integer(32);
     assert_eq!(int.0, 32);
     let int: Int = 10;

@@ -9,11 +9,8 @@ use std::fmt::Display;
 use std::fs::File;
 use std::rc::Rc;
 
-///以文件夹为mod的, 文件夹内必须有一个mod.rs存放模块源码
-mod sliceT;
 mod intoT;
 mod traitT;
-mod stringT;
 mod patternT;
 mod into_from;
 mod lazy_static_test;
@@ -23,7 +20,6 @@ mod data_structure;
 mod lock_test;
 
 
-///主方法, 运行其它学习单元的主方法
 fn main() {
     memory_and_pointer_test::concurrent_write_memory::test();
 }

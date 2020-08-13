@@ -35,12 +35,18 @@ pub fn test() {
     // 检测是否出现损坏的值
     let target_ptr = get_box_inside_ptr(&target_box);
     let mut target;
+
+    let mut read_count = 0;
     unsafe {
         loop {
+            read_count += 1;
             target = *target_ptr;
             println!("{}", target);
             if !nums.contains(&target) {
                 println!("出现损坏的值:{}", target);
+                break;
+            }
+            if read_count > 10000 {
                 break;
             }
         }
