@@ -11,8 +11,6 @@ use std::rc::Rc;
 
 ///以文件夹为mod的, 文件夹内必须有一个mod.rs存放模块源码
 mod sliceT;
-mod collections;
-mod hashmapT;
 mod intoT;
 mod traitT;
 mod stringT;

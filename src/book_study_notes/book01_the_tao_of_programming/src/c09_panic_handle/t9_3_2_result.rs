@@ -73,7 +73,6 @@ fn test_combinator() {
         number.parse::<i32>().map(|n| n.pow(2))
     }
 
-    /// 测试square
     match square("123") {
         Ok(n) => println!("number is {}", n),
         Err(e) => println!("Error:{:?}", e),

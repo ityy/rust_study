@@ -1,5 +1,5 @@
 //! # Vec 动态数组
-//! Rust中数组有两种类型:
+//! Rust中的数组有两种类型:
 //! ```ignore
 //! array       长度固定    签名为[T;N]    可以在栈上存储
 //! vec         动态长度    签名为Vec<T>   运行时确定大小，只能在堆上存储
@@ -7,7 +7,27 @@
 //! Vec即vector，意为矢量。矢量为具有大小和方向的量。<br/>
 //! 创建Vec，与创建String类似，因为String本质上是对Vec<u8>的包装。
 
+
+
+
 /// # Vec 基本操作
+/// ```
+///   //新建
+///  let v1: Vec<i32> = Vec::new(); //new 方式
+///  let mut v2 = vec![1, 2, 3]; //宏 方式
+///
+///  //增加
+///  v2.push(4);
+///
+///  //获取
+///  let i1 = &v2[1]; // 下标获取
+///  let i2 = v2.get(2).unwrap(); // get方法获取, 返回option
+///
+///  //遍历
+///  for i in &v2 {
+///      println!("{}", i);
+///  }
+/// ```
 #[test]
 fn test() {
     // push、get
@@ -71,3 +91,4 @@ fn test_with_capacity() {
     assert_eq!(0, vec.len());
     assert_eq!(0, vec.capacity());
 }
+
