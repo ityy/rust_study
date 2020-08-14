@@ -1,0 +1,9 @@
+[package]
+name = "lazy_static_test"
+version = "0.1.0"
+authors = ["yangyang <ofyang@qq.com>"]
+edition = "2018"
+workspace = "../.."
+
+[dependencies]
+lazy_static = "1.4.0"
