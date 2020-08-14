@@ -85,7 +85,20 @@ fn test_array() {
 }
 
 /// ## 05 范围类型
-/// Rust内置了范围（Range）类型，包括[左闭右开),[全闭]两种区间。
+/// Rust内置了范围（Range）类型，包括 [左闭右开)、[全闭] 两种区间。
+///
+/// Range是标准库里的一个结构体，有两个属性, start和end：
+/// ```
+/// pub struct Range<Idx> {
+///     /// The lower bound of the range (inclusive).
+///     #[stable(feature = "rust1", since = "1.0.0")]
+///     pub start: Idx,
+///     /// The upper bound of the range (exclusive).
+///     #[stable(feature = "rust1", since = "1.0.0")]
+///     pub end: Idx,
+/// }
+/// ```
+/// rust提供了一个语法糖, 可以快速创建range，只需要使用(x..y)的形式, 即可实现一个 [x,y) 左闭右开的区间。
 #[test]
 fn test_range() {
     // 范围类型有两个struct：
@@ -97,9 +110,13 @@ fn test_range() {
     // [全闭]
     let y = std::ops::RangeInclusive::new(1, 3);
 
-    // 使用语法糖快速定义方位类型：
-    let x = 1..3;// Range的简易创建形式
-    let y = 1..=3;//RangeInclusive的简易创建形式
+    //语法糖 快速创建Range
+    assert_eq!((1..5), std::ops::Range { start: 1, end: 5 });
+    assert_eq!((1..=5), std::ops::RangeInclusive::new(1, 5));
+
+    //Range相关的方法
+    assert_eq!((3..6).max().unwrap(), 5);
+    assert_eq!((3..=6).sum::<u32>(), 3 + 4 + 5 + 6);
 }
 
 
@@ -191,7 +208,8 @@ fn test_pointer() {
 }
 
 /// ## 09 never类型
-/// Rust提供了一种特殊的类型，never类型，即！。<br/>
+/// Rust提供了一种特殊的类型，never类型，即！。
+///
 /// 该类型表示永远不可能有返回值的计算类型。
 #[test]
 fn test_never() {

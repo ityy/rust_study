@@ -1271,6 +1271,13 @@ version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "lazy_static_test"
+version = "0.1.0"
+dependencies = [
+ "lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.66"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2077,14 +2084,6 @@ dependencies = [
 [[package]]
 name = "rust_study"
 version = "0.2.0"
-dependencies = [
- "failure 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "failure_derive 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "rand 0.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde_json 1.0.44 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
 [[package]]
 name = "rustc-demangle"
