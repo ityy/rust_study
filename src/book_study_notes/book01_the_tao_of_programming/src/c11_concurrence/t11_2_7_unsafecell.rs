@@ -1,4 +1,4 @@
-//! 内部可变性探究
+//! # 内部可变性探究
 //! UnsafeCell<T> 源码解读
 //! Mutex,Rwlock,Cell,RefCell,原子类型以及mpsc::Sender等的源码内部，都是使用UnsafeCell来提供内部可变性。
 //! UnsafeCell是将不可变转为可变的唯一合法渠道，上述类型不会违反Rust的安全检查。
