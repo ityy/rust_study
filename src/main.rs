@@ -9,10 +9,9 @@ use std::fmt::Display;
 use std::fs::File;
 use std::rc::Rc;
 
-mod intoT;
 mod traitT;
 mod patternT;
-mod into_from;
+mod into_from_test;
 mod lazy_static_test;
 mod memory_and_pointer_test;
 mod range_test;
